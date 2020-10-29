@@ -1,9 +1,11 @@
 package kmeans;
 
-import java.util.*;
+import entities.Location;
 
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class Kmeans {
     private static final Random random = new Random();
