@@ -24,7 +24,7 @@ public class JsonReader {
     }
   }
 
-  public List getContents() {
+  public List<JSONObject> getContents() {
     return data;
   }
 }

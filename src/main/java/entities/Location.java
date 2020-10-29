@@ -3,6 +3,7 @@ package entities;
 import lombok.Data;
 
 import java.util.Objects;
+import java.util.Map;
 
 public @Data class Location {
     private String name;

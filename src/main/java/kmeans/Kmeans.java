@@ -1,17 +1,23 @@
 package kmeans;
 
 import entities.Location;
+import entities.Coordinate;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 public class Kmeans {
     private static final Random random = new Random();
 
-    public static Map<Centroid, List<Location>> fit(List<Location> locations, int k, EuclideanDistance euclideanDistance, int maxIterations) {
-        applyPreconditions(locations, k, euclideanDistance, maxIterations);
+    public static Map<Centroid, List<Location>> fit(List<Location> locations, int k, int maxIterations) {
+        applyPreconditions(locations, k, maxIterations);
 
         List<Centroid> centroids = randomCentroids(locations, k);
         Map<Centroid, List<Location>> clusters = new HashMap<>();
@@ -21,7 +27,7 @@ public class Kmeans {
             boolean isLastIteration = i == maxIterations - 1;
 
             for (Location location : locations) {
-                Centroid centroid = nearestCentroid(location, centroids, euclideanDistance);
+                Centroid centroid = nearestCentroid(location, centroids);
                 assignToCluster(clusters, location, centroid);
             }
             // termination condition
@@ -32,6 +38,7 @@ public class Kmeans {
             }
 
             centroids = relocateCentroids(clusters);
+            System.out.println(centroids);
             clusters = new HashMap<>();
         }
 
@@ -39,6 +46,9 @@ public class Kmeans {
     }
 
     private static List<Centroid> relocateCentroids(Map<Centroid, List<Location>> clusters) {
+        System.out.println("HEREE>>>>");
+        System.out.println(clusters.entrySet().stream().map(e -> average(e.getKey(), e.getValue())).collect(toList()));
+        System.out.println("ENDDD");
         return clusters.entrySet().stream().map(e -> average(e.getKey(), e.getValue())).collect(toList());
     }
 
@@ -71,12 +81,13 @@ public class Kmeans {
         });
     }
 
-    private static Centroid nearestCentroid(Location location, List<Centroid> centroids, EuclideanDistance distance) {
+    private static Centroid nearestCentroid(Location location, List<Centroid> centroids) {
         double minimumDistance = Double.MAX_VALUE;
         Centroid nearest = null;
+        EuclideanDistance ed = new EuclideanDistance();
 
         for (Centroid centroid : centroids) {
-            double currentDistance = distance.calculate(location.getLatLng(), centroid.getLatLng());
+            double currentDistance = ed.calculate(location.getLatLng(), centroid.getLatLng());
 
             if (currentDistance < minimumDistance) {
                 minimumDistance = currentDistance;
@@ -125,17 +136,13 @@ public class Kmeans {
         return centroids;
     }
 
-    private static void applyPreconditions(List<Location> locations, int k, EuclideanDistance distance, int maxIterations) {
+    private static void applyPreconditions(List<Location> locations, int k, int maxIterations) {
         if (locations == null || locations.isEmpty()) {
             throw new IllegalArgumentException("The dataset can't be empty");
         }
 
         if (k <= 1) {
             throw new IllegalArgumentException("It doesn't make sense to have less than or equal to 1 cluster");
-        }
-
-        if (distance == null) {
-            throw new IllegalArgumentException("The distance calculator is required");
         }
 
         if (maxIterations <= 0) {

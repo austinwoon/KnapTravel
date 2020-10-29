@@ -2,6 +2,7 @@ package kmeans;
 import entities.Coordinate;
 
 import java.util.Objects;
+import java.util.Map;
 
 public class Centroid {
     private final Coordinate coordinate;
