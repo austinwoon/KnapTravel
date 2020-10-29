@@ -20,6 +20,10 @@ public class Location {
         return coordinate;
     }
 
+    public Map<String, Double> getLatLng() {
+        return coordinate.getCoordinates();
+    }
+
     @Override
     public String toString() {
         return "Location{" +

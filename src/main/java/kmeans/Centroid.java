@@ -13,6 +13,10 @@ public class Centroid {
         return coordinate;
     }
 
+    public Map<String, Double> getLatLng() {
+        return coordinate.getCoordinates();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
