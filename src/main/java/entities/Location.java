@@ -1,23 +1,17 @@
-package kmeans;
+package entities;
 
-import java.util.Map;
+import lombok.Data;
+
 import java.util.Objects;
 
-public class Location {
+public @Data class Location {
     private String name;
     private Coordinate coordinate;
+    private double score;
 
     public Location(String name, Coordinate coordinate) {
         this.name = name;
         this.coordinate = coordinate;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Coordinate getCoordinate() {
-        return coordinate;
     }
 
     @Override

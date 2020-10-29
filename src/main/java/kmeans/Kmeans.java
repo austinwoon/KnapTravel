@@ -1,5 +1,7 @@
 package kmeans;
 
+import entities.Location;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -1,5 +1,7 @@
 package kmeans;
 
+import entities.Location;
+
 import java.util.Map;
 
 public class EuclideanDistance {

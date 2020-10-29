@@ -1,5 +1,6 @@
 package kmeans;
-import java.util.Map;
+import entities.Coordinate;
+
 import java.util.Objects;
 
 public class Centroid {

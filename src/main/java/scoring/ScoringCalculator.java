@@ -1,7 +1,7 @@
 package scoring;
 
+import entities.Location;
 import jsonReader.JsonReader;
-import kmeans.Location;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
@@ -12,14 +12,14 @@ public class ScoringCalculator {
 
   private static List<Location> locations = new ArrayList<>();
 
-  private String dataPath = "src/main/resources/aggregated_data.json";
+  private static final int PREFERENCE_POINTS = 1;
 
   public ScoringCalculator(HashSet<String> preferences) {
     JsonReader jr = new JsonReader();
     List<JSONObject> data = jr.getContents();
 
     for (JSONObject location : data) {
-      System.out.println(location.get("name"));
+      System.out.println(location.get("tags"));
     }
 
   }
