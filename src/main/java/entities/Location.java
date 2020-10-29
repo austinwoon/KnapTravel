@@ -9,16 +9,18 @@ public @Data class Location {
     private Coordinate coordinate;
     private double score;
 
-    public Location(String name, Coordinate coordinate) {
+    public Location(String name, Coordinate coordinate, double score) {
         this.name = name;
         this.coordinate = coordinate;
+        this.score = score;
     }
 
     @Override
     public String toString() {
         return "Location{" +
                 "name='" + name + '\'' +
-                ", coordinates=" + coordinate +
+                ", coordinates=" + coordinate + '\'' +
+                ", score=" + score +
                 '}';
     }
 

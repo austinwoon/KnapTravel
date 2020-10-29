@@ -1,10 +1,11 @@
 package entities;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public class Coordinate {
-    private Map<String, Double> coordinates;
+    private Map<String, Double> coordinates = new HashMap<>();
 
     public Coordinate(Map<String, Double> coordinates) {
         this.coordinates.put("lat", coordinates.get("lat"));
