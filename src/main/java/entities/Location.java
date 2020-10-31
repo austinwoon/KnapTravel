@@ -40,4 +40,8 @@ public @Data class Location {
     public int hashCode() {
         return Objects.hash(name, coordinate);
     }
+
+    public String getName() {
+        return name;
+    }
 }
