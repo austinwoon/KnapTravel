@@ -14,21 +14,22 @@ public class ScoringCalculator {
 
   private static List<Location> locations = new ArrayList<>();
 
-  private static final int PREFERENCE_POINTS = 1;
+  private static final double PREFERENCE_POINTS = 1.5;
 
   public ScoringCalculator(HashSet<String> preferences) {
     JsonReader jr = new JsonReader();
     List<JSONObject> data = jr.getContents();
 
     for (JSONObject location : data) {
+
       double rating;
       try {
         rating = (Double) location.get("rating");
       } catch (ClassCastException e){
         rating = (int)location.get("rating");
       }
+      double score = rating + (int) location.get("popular");
 
-      double score = rating;
       if (preferences.size() != 0) {
         List<String> tags = (List<String>) location.get("tags");
         for (String tag : tags) {
