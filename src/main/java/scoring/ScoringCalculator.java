@@ -47,8 +47,6 @@ public class ScoringCalculator {
       } catch (ClassCastException e) {
         System.out.println(location.get("name"));
       }
-
-
     }
 
   }
