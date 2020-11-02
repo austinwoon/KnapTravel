@@ -3,47 +3,49 @@ package scoring;
 import entities.Coordinate;
 import entities.Location;
 import jsonReader.JsonReader;
+import knapsack.KnapsackLocations;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ScoringCalculator {
 
   private static List<Location> locations = new ArrayList<>();
 
-  private static final double PREFERENCE_POINTS = 1.5;
+  private static final double PREFERENCE_WEIGHT = 1.5;
+  private static final double POPULAR_WEIGHT = 1.2;
 
   public ScoringCalculator(HashSet<String> preferences) {
     JsonReader jr = new JsonReader();
     List<JSONObject> data = jr.getContents();
 
+    System.out.println(data.get(0).keySet());
+    System.out.println(data.get(0).get("tags"));
     for (JSONObject location : data) {
 
-      double rating;
-      try {
-        rating = (Double) location.get("rating");
-      } catch (ClassCastException e){
-        rating = (int)location.get("rating");
+      double score = (double) location.get("score");
+      if ((int) location.get("popular") == 1) {
+        score *= POPULAR_WEIGHT;
       }
-      double score = rating + (int) location.get("popular");
 
       if (preferences.size() != 0) {
-        List<String> tags = (List<String>) location.get("tags");
-        for (String tag : tags) {
-          if (preferences.contains(tag)) {
-            score += PREFERENCE_POINTS;
+        List<LinkedHashMap> tags = (List<LinkedHashMap>) location.get("tags");
+        for (LinkedHashMap tag : tags) {
+          LinkedHashMap innerTag = (LinkedHashMap) tag.get("tag");
+          String tagName = (String) innerTag.get("name");
+          if (preferences.contains(tagName)) {
+            score *= PREFERENCE_WEIGHT;
           }
         }
       }
 
       String name = (String) location.get("name");
-      Map<String, Double> cm = (Map<String, Double>) location.get("location");
+      double hours = (Double) location.get("hours_spent") * 2;
+
+      Map<String, Double> cm = (Map<String, Double>) location.get("coordinates");
       try {
         Coordinate coordinates = new Coordinate(cm.get("latitude"), cm.get("longitude"));
-        locations.add(new Location(name, coordinates, score));
+        locations.add(new Location(name, coordinates, score, (int) hours));
       } catch (ClassCastException e) {
         System.out.println(location.get("name"));
       }
@@ -57,9 +59,10 @@ public class ScoringCalculator {
 
   public static void main(String[] args) {
     HashSet<String> pref = new HashSet<>();
-    pref.add("Museums");
+//    pref.add("Museums");
     new ScoringCalculator(pref);
-    for (Location location : getLocations()) {
+    KnapsackLocations knapper =new KnapsackLocations();
+    for (Location location : knapper.getTopLocations(getLocations())) {
       System.out.println(location.getName() + ": " + location.getScore());
     }
   }

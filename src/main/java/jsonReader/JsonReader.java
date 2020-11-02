@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JsonReader {
-  private String dataPath = "src/main/resources/data/mapped.json";
+  private String dataPath = "src/main/resources/data/tokyo-processed.json";
 
   List<JSONObject> data = new ArrayList<>();
 

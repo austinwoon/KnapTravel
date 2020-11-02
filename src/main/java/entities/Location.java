@@ -9,11 +9,18 @@ public @Data class Location {
     private String name;
     private Coordinate coordinate;
     private double score;
+    private int hours;
 
-    public Location(String name, Coordinate coordinate, double score) {
+    public Location(String name, Coordinate coordinate, double score, int hours) {
         this.name = name;
         this.coordinate = coordinate;
         this.score = score;
+        this.hours = hours;
+    }
+
+    public Location(String name, Coordinate coordinate) {
+        this.name = name;
+        this.coordinate = coordinate;
     }
 
     public Map<String, Double> getLatLng() {
