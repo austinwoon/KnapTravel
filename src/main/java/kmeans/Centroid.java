@@ -2,6 +2,7 @@ package kmeans;
 import entities.Coordinate;
 
 import java.util.Objects;
+import java.util.Map;
 
 public class Centroid {
     private final Coordinate coordinate;
@@ -12,6 +13,10 @@ public class Centroid {
 
     public Coordinate getCoordinate() {
         return coordinate;
+    }
+
+    public Map<String, Double> getLatLng() {
+        return coordinate.getCoordinates();
     }
 
     @Override

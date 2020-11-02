@@ -8,13 +8,14 @@ public class Coordinate {
     private Map<String, Double> coordinates = new HashMap<>();
 
     public Coordinate(Map<String, Double> coordinates) {
-        this.coordinates.put("lat", coordinates.get("lat"));
-        this.coordinates.put("lng", coordinates.get("lng"));
+        this.coordinates = coordinates;
     }
 
     public Coordinate(Double lat, Double lng) {
-        this.coordinates.put("lat", lat);
-        this.coordinates.put("lng", lng);
+        Map<String, Double> coordinates = new HashMap<>();
+        coordinates.put("lat", lat);
+        coordinates.put("lng", lng);
+        this.coordinates = coordinates;
     }
 
     public Map<String, Double> getCoordinates() {

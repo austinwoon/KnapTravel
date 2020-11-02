@@ -3,6 +3,7 @@ package entities;
 import lombok.Data;
 
 import java.util.Objects;
+import java.util.Map;
 
 public @Data class Location {
     private String name;
@@ -13,6 +14,10 @@ public @Data class Location {
         this.name = name;
         this.coordinate = coordinate;
         this.score = score;
+    }
+
+    public Map<String, Double> getLatLng() {
+        return coordinate.getCoordinates();
     }
 
     @Override
@@ -36,5 +41,9 @@ public @Data class Location {
     @Override
     public int hashCode() {
         return Objects.hash(name, coordinate);
+    }
+
+    public String getName() {
+        return name;
     }
 }
