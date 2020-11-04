@@ -33,12 +33,12 @@ public class KnapsackLocations {
       }
     }
 
-    for (double[] rows : table) {
-      for (double nums: rows) {
-        System.out.print(nums + " , ");
-      }
-      System.out.println();
-    }
+//    for (double[] rows : table) {
+//      for (double nums: rows) {
+//        System.out.print(nums + " , ");
+//      }
+//      System.out.println();
+//    }
 //  get items that contributed to the highest score
     int traverseRow = num;
     int traverseCol = TIME_LIMIT;
@@ -52,19 +52,15 @@ public class KnapsackLocations {
       }
       Location shortlisted = locations.get(traverseRow - 1);
       results.add(shortlisted);
-      System.out.println(shortlisted.getName() + ", " + shortlisted.getHours() + ", " + shortlisted.getScore());
       biggest -= shortlisted.getScore();
       if (biggest == 0) {
         break;
       }
       traverseRow--;
       DecimalFormat df = new DecimalFormat("#.########");
-      System.out.println(df.format(table[traverseRow][traverseCol]));
       while (traverseCol >= 0 && !df.format(biggest).equals(df.format(table[traverseRow][traverseCol]))) {
         traverseCol--;
       }
-      System.out.println("biggest: " + biggest);
-      System.out.println("row: " + traverseRow + "col: " + traverseCol);
     }
     return results;
   }

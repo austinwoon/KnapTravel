@@ -18,9 +18,7 @@ public class ScoringCalculator {
   public ScoringCalculator(HashSet<String> preferences) {
     JsonReader jr = new JsonReader();
     List<JSONObject> data = jr.getContents();
-
-    System.out.println(data.get(0).keySet());
-    System.out.println(data.get(0).get("tags"));
+    
     for (JSONObject location : data) {
 
       double score = (double) location.get("score");
