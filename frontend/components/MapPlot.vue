@@ -19,8 +19,8 @@
                 return "mapContainer-" + this.id;
             },
             center() {
-                const sumLat = this.plotPoints.reduce((accum, currentVal) => accum + currentVal[0], 0);
-                const sumLng = this.plotPoints.reduce((accum, currentVal) => accum + currentVal[1], 0);
+                const sumLat = this.plotPoints.reduce((accum, currentVal) => accum + currentVal.coordinates[0], 0);
+                const sumLng = this.plotPoints.reduce((accum, currentVal) => accum + currentVal.coordinates[1], 0);
                 return [sumLat / this.plotPoints.length, sumLng / this.plotPoints.length];
             }
         },
@@ -42,7 +42,7 @@
             },
             
             setupLeafletMap() {
-                const mapDiv = L.map(this.mapContainerId, {center: this.center, zoom: 13});
+                const mapDiv = L.map(this.mapContainerId, {center: this.center, zoom: 12});
                 L.tileLayer(
                     "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
                     {
@@ -55,7 +55,10 @@
                 ).addTo(mapDiv);
 
                 this.plotPoints.forEach(point => {
-                    L.marker(point).addTo(mapDiv);
+                    L.marker(point.coordinates, {
+                        title: point.title,
+                        riseOnHover: true,
+                    }).addTo(mapDiv);
                 })
             }
         },
@@ -67,7 +70,7 @@
 
 <style scoped>
   .map-style {
-    width: 70vw;
-    height: 100vh;
+    width: 100%;
+    height: 500px;
   }
 </style>
