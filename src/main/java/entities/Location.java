@@ -17,7 +17,7 @@ public @Data class Location implements Comparable<Location> {
         this.coordinate = coordinate;
         this.score = score;
         this.hours = hours;
-        this.hoursMultipliedByTwo = (int)hours * 2;
+        this.hoursMultipliedByTwo = (int)(hours * 2);
     }
 
     public Location(String name, Coordinate coordinate) {
