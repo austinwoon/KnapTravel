@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-public class TriposoMain {
+public class Main {
     public static void main(String[] args) {
 
         HashSet<String> pref = new HashSet<>();
