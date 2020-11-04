@@ -1,4 +1,4 @@
-package knapsack;
+package location_picker;
 
 import entities.Coordinate;
 import entities.Location;
@@ -7,17 +7,26 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KnapsackLocations {
-  private static final int TIME_LIMIT = 8 * 2;
+public class KnapsackLocationSelector implements LocationSelector {
+  private int timeConstraint;
+  private List<Location> locations;
 
-  public static List<Location> getTopLocations(List<Location> locations) {
+  public KnapsackLocationSelector(List<Location> locations, int timeConstraint) {
+    // multiply timeConstraint by two because our hours are in floats of 0.5, for ILP, we want whole numbers
+    // so that you can access the scores by index in the ILP matrix
+    this.locations = locations;
+    this.timeConstraint = timeConstraint * 2;
+  }
+
+  @Override
+  public List<Location> selectLocationsToVisit() {
     List<Location> results = new ArrayList<>();
     int num = locations.size();
 
-    double table[][] = new double[num + 1][TIME_LIMIT + 1];
-// create knapsack table
+    double[][] table = new double[num + 1][timeConstraint + 1];
+    // create knapsack table
     for (int row = 0; row <= num; row++) {
-      for (int col = 0; col <= TIME_LIMIT; col++) {
+      for (int col = 0; col <= timeConstraint; col++) {
         if (row == 0 || col == 0) {
           table[row][col] = 0;
         } else if (locations.get(row - 1).getHours() <= col) {
@@ -40,8 +49,9 @@ public class KnapsackLocations {
 //      System.out.println();
 //    }
 //  get items that contributed to the highest score
+
     int traverseRow = num;
-    int traverseCol = TIME_LIMIT;
+    int traverseCol = timeConstraint;
 
     while (traverseRow >= 0 && traverseCol >= 0) {
 
@@ -65,24 +75,24 @@ public class KnapsackLocations {
     return results;
   }
 
-  public static void main(String[] args) {
-    Coordinate co = new Coordinate(4.0,3.0);
-    Location loc1 = new Location("hi", co, 5.0, 3);
-    Location loc2 = new Location("hi", co, 6.0, 3);
-    Location loc3 = new Location("hi", co, 7.0, 3);
-    Location loc4 = new Location("hi", co, 5.0, 3);
-    Location loc5 = new Location("hi", co, 5.0, 3);
-
-    List<Location> locations = new ArrayList<>();
-    locations.add(loc1);
-    locations.add(loc2);
-    locations.add(loc3);
-    locations.add(loc4);
-    locations.add(loc5);
-
-    for (Location loc: getTopLocations(locations)) {
-      System.out.println(loc.getScore());
-    }
-
-  }
+//  public static void main(String[] args) {
+//    Coordinate co = new Coordinate(4.0,3.0);
+//    Location loc1 = new Location("hi", co, 5.0, 3);
+//    Location loc2 = new Location("hi", co, 6.0, 3);
+//    Location loc3 = new Location("hi", co, 7.0, 3);
+//    Location loc4 = new Location("hi", co, 5.0, 3);
+//    Location loc5 = new Location("hi", co, 5.0, 3);
+//
+//    List<Location> locations = new ArrayList<>();
+//    locations.add(loc1);
+//    locations.add(loc2);
+//    locations.add(loc3);
+//    locations.add(loc4);
+//    locations.add(loc5);
+//
+//    for (Location loc: selectLocationsToVisit(locations)) {
+//      System.out.println(loc.getScore());
+//    }
+//
+//  }
 }

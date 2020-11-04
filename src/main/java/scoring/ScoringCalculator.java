@@ -3,7 +3,8 @@ package scoring;
 import entities.Coordinate;
 import entities.Location;
 import jsonReader.JsonReader;
-import knapsack.KnapsackLocations;
+import location_picker.KnapsackLocationSelector;
+import location_picker.LocationSelector;
 import org.json.simple.JSONObject;
 
 import java.util.*;
@@ -11,14 +12,30 @@ import java.util.*;
 public class ScoringCalculator {
 
   private static List<Location> locations = new ArrayList<>();
+  private HashSet<String> preferences;
+  private String filePath;
 
   private static final double PREFERENCE_WEIGHT = 1.5;
   private static final double POPULAR_WEIGHT = 1.2;
 
-  public ScoringCalculator(HashSet<String> preferences) {
-    JsonReader jr = new JsonReader();
+  /**
+   *
+   * @param preferences
+   * @param filePath
+   */
+  public ScoringCalculator(HashSet<String> preferences, String filePath) {
+    this.preferences = preferences;
+    this.filePath = filePath;
+    this.generateLocationsWithScores();
+  }
+
+  /**
+   * Generate static locations attribute from given preferences and filePath inputs
+   */
+  private void generateLocationsWithScores() {
+    JsonReader jr = new JsonReader(filePath);
     List<JSONObject> data = jr.getContents();
-    
+
     for (JSONObject location : data) {
 
       double score = (double) location.get("score");
@@ -48,23 +65,10 @@ public class ScoringCalculator {
         System.out.println(location.get("name"));
       }
     }
-
   }
 
-  public static List<Location> getLocations() {
+  public List<Location> getLocations() {
     return locations;
   }
-
-  public static void main(String[] args) {
-    HashSet<String> pref = new HashSet<>();
-//    pref.add("Museums");
-    new ScoringCalculator(pref);
-    KnapsackLocations knapper =new KnapsackLocations();
-    for (Location location : knapper.getTopLocations(getLocations())) {
-      System.out.println(location.getName() + ": " + location.getScore() + ", " + location.getHours());
-    }
-  }
-
-
 
 }

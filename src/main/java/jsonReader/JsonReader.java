@@ -10,14 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JsonReader {
-  private String dataPath = "src/main/resources/data/tokyo-processed.json";
-
+  private String filePath;
   List<JSONObject> data = new ArrayList<>();
 
-  public JsonReader() {
+  public JsonReader(String filePath) {
+    this.filePath = filePath;
+    readData();
+  }
+
+  private void readData() {
     ObjectMapper mapper = new ObjectMapper();
     try {
-      data = mapper.readValue(new File(dataPath), new TypeReference<List<JSONObject>>() {
+      data = mapper.readValue(new File(filePath), new TypeReference<List<JSONObject>>() {
       });
     } catch (IOException e) {
       e.printStackTrace();

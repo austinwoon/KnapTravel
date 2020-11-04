@@ -2,6 +2,7 @@ package kmeans;
 
 import entities.Location;
 import entities.Coordinate;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,7 @@ public class Kmeans {
 
     private static final Random random = new Random();
 
-    public static Map<Centroid, List<Location>> fit(List<Location> locations, int k, int maxIterations) {
+    public static Map<Integer, List<Location>> fit(List<Location> locations, int k, int maxIterations) {
         applyPreconditions(locations, k, maxIterations);
 
         List<Centroid> centroids = randomCentroids(locations, k);
@@ -39,17 +40,26 @@ public class Kmeans {
             }
 
             centroids = relocateCentroids(clusters);
-            System.out.println(centroids);
             clusters = new HashMap<>();
         }
 
-        return lastState;
+        return getClusterMapping(lastState);
+    }
+
+    /**
+     * Gets cluster mapping where key is cluster number and value is list of locations belonging to that cluster
+     */
+    private static Map<Integer, List<Location>> getClusterMapping(Map<Centroid, List<Location>> clusteredLocations) {
+        Map<Integer, List<Location>> integerClusterMap = new HashMap<>();
+
+        int i = 0;
+        for (List<Location> locationCluster : clusteredLocations.values()) {
+            integerClusterMap.put(i++, locationCluster);
+        }
+        return integerClusterMap;
     }
 
     private static List<Centroid> relocateCentroids(Map<Centroid, List<Location>> clusters) {
-        System.out.println("HEREE>>>>");
-        System.out.println(clusters.entrySet().stream().map(e -> average(e.getKey(), e.getValue())).collect(toList()));
-        System.out.println("ENDDD");
         return clusters.entrySet().stream().map(e -> average(e.getKey(), e.getValue())).collect(toList());
     }
 
