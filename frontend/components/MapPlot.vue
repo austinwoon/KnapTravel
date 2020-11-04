@@ -25,22 +25,6 @@
             }
         },
         methods: {
-            styleMap(feature){
-                const year = feature.properties.datelisted
-                    ? parseInt(feature.properties.datelisted.slice(0, 4))
-                    : 0;
-                const color = year > 2000 ? "red" : "blue";
-                return { color: color };
-            },
-
-            onEachFeature(feature, layer) {
-                if (feature.properties && feature.properties.name) {
-                    layer.bindPopup(feature.properties.name);
-                    layer.on('mouseover', () => { layer.openPopup(); });
-                    layer.on('mouseout', () => { layer.closePopup(); });
-                }
-            },
-            
             setupLeafletMap() {
                 const mapDiv = L.map(this.mapContainerId, {center: this.center, zoom: 12});
                 L.tileLayer(
@@ -55,10 +39,12 @@
                 ).addTo(mapDiv);
 
                 this.plotPoints.forEach(point => {
-                    L.marker(point.coordinates, {
-                        title: point.title,
-                        riseOnHover: true,
-                    }).addTo(mapDiv);
+                    L.marker(point.coordinates
+                    ).bindTooltip(point.name, {
+                        direction: 'top',
+                        permanent: true,
+                        offset: [-15, -10]
+                    }).addTo(mapDiv)
                 })
             }
         },

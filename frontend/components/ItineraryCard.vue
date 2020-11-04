@@ -1,7 +1,6 @@
 <template>
   <div>
-    
-    <a-card :title="title">
+    <a-card :title="title" class="itinerary-card">
       <a-row style="margin-bottom: 16px">
         <MapPlot
             :id="title"
@@ -11,8 +10,16 @@
       
       <a-row>
         <template>
-          <a-timeline>
-            <a-timeline-item v-for="day in this.days"> {{dailyItinerary[day]}}</a-timeline-item>
+          <a-timeline
+              mode="alternate"
+              class="timeline-width"
+          >
+            <a-timeline-item
+                v-for="(n, day) in this.days"
+                :key="dailyItinerary[day].name"
+            >
+              <TimelineCard :point-of-interest="dailyItinerary[day]" :visitSequence="day"/>
+            </a-timeline-item>
           </a-timeline>
         </template>
       </a-row>
@@ -22,10 +29,11 @@
 
 <script>
     import MapPlot from "./MapPlot";
+    import TimelineCard from "./TimelineCard/TimelineCard";
 
     export default {
         name: "ItineraryCard",
-        components: {MapPlot},
+        components: {TimelineCard, MapPlot},
         props: {
             "dailyItinerary": {
                 type: Object,
@@ -42,12 +50,11 @@
             },
             plotPoints() {
                 const plotPoints = [];
-                Object.values(this.dailyItinerary).forEach( place => {
-                    const { lat, lng } = place.coordinate.coordinates;
-                    plotPoints.push({ title: place.name, coordinates: [lat, lng]});
+                Object.values(this.dailyItinerary).forEach(place => {
+                    const {lat, lng} = place.coordinate.coordinates;
+                    plotPoints.push({name: place.name, coordinates: [lat, lng]});
                 });
-                
-                console.log(plotPoints)
+
                 return plotPoints;
             }
         }

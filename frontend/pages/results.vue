@@ -1,12 +1,24 @@
 <template>
-  <div>
-    
-    <ItineraryCard
-        v-for="(dailyItinerary, i) in results"
-        :key="i+'itineraryCard'"
-        :dailyItinerary="dailyItinerary"
-        :title="`Day ${i + 1} Schedule`"
-    />
+  <div style="width:100vw">
+    <a-row type="flex" gutter="md">
+      <a-col
+          style="margin: 0 16px 0 16px"
+          :span="7"
+          :xs="{ span: 24 }"
+          :sm="{ span: 24 }"
+          :md="{ span: 24 }"
+          :lg="{ span: 11 }"
+          :xl="{ span: 11 }"
+          :xxl="{ span: 7 }"
+          v-for="(dailyItinerary, i) in results"
+          :key="i+'itineraryCard'"
+      >
+        <ItineraryCard
+            :dailyItinerary="dailyItinerary"
+            :title="`Day ${i + 1} Schedule`"
+        />
+      </a-col>
+    </a-row>
   
   </div>
 </template>
