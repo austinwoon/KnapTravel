@@ -41,7 +41,8 @@ public class AlgoController {
   public static Map<Integer, List<Location>> getKnapsackLocation(Map<Integer, List<Location>> clusters, int timeConstraint) {
     Map<Integer, List<Location>> selectedLocations = new HashMap<>();
     for (Integer i : clusters.keySet()) {
-      LocationSelector selector = new KnapsackLocationSelector(clusters.get(i), 9);
+      LocationSelector selector = new KnapsackLocationSelector(clusters.get(i), timeConstraint);
+      System.out.println(selector.selectLocationsToVisit().size());
       selectedLocations.put(i, selector.selectLocationsToVisit());
     }
     return selectedLocations;
