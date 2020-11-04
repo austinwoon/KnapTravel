@@ -12,6 +12,7 @@
     "@nuxtjs/axios": "^5.12.2",
     "ant-design-vue": "^1.6.5",
     "core-js": "^3.6.5",
+    "leaflet": "^1.7.1",
     "nuxt": "^2.14.6"
   },
   "devDependencies": {}
