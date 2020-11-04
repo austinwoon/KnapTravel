@@ -12,6 +12,7 @@ public class ScoringCalculator {
     private List<Location> locations;
     private HashSet<String> preferences;
     private String filePath;
+    private Coordinate center;
 
     private static final double PREFERENCE_WEIGHT = 1.5;
     private static final double POPULAR_WEIGHT = 1.2;
@@ -34,6 +35,10 @@ public class ScoringCalculator {
     private void generateLocationsWithScores() {
         JsonReader jr = new JsonReader(filePath);
         List<JSONObject> data = jr.getContents();
+
+        double latSum = 0;
+        double longSum = 0;
+        int locationNum = data.size();
 
         for (JSONObject location : data) {
 
@@ -92,6 +97,9 @@ public class ScoringCalculator {
             double hours = (Double) location.get("hours_spent");
 
             Map<String, Double> cm = (Map<String, Double>) location.get("coordinates");
+            latSum += cm.get("latitude");
+            longSum += cm.get("longitude");
+
             try {
                 Coordinate coordinates = new Coordinate(cm.get("latitude"), cm.get("longitude"));
                 locations.add(new Location(name, coordinates, score, hours, description, website, price, openingHours, address));
@@ -99,11 +107,15 @@ public class ScoringCalculator {
                 System.out.println(location.get("name"));
             }
         }
+
+        this.center = new Coordinate(latSum/locationNum, longSum/locationNum);
     }
 
     public List<Location> getLocations() {
         return locations;
     }
+
+    public Coordinate getCenter() { return center; }
 
     public static Map<String, Integer> getTagCount() {
         return tagCount;
