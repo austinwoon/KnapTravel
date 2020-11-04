@@ -18,9 +18,11 @@ import java.util.Map;
 @RestController
 public class AlgoController {
 
+  @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/getTags/{city}")
   public TagsResponseModel getTags(@PathVariable String city) {
     // TODO: Either put data source in db, or make JSONReader return a List of Locations, getting List of Locations too tightly coupled with Scorer class
+    System.out.println("CITY>>>>>>>>>>>>>>>" + city);
     String dataSource = String.format("src/main/resources/data/%s-processed.json", city.toLowerCase());
     HashSet<String> pref = new HashSet<>();
 
@@ -30,6 +32,7 @@ public class AlgoController {
     return new TagsResponseModel(tags);
   }
 
+  @CrossOrigin(origins = "http://localhost:3000")
   @PostMapping("/getItinerary")
   public ItineraryResponseModel getItinerary(@RequestBody ItineraryFormInputModel request) throws Exception {
 

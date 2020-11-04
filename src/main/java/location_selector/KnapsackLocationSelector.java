@@ -4,6 +4,7 @@ import entities.Location;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class KnapsackLocationSelector implements LocationSelector {
@@ -71,6 +72,7 @@ public class KnapsackLocationSelector implements LocationSelector {
         traverseCol--;
       }
     }
+
     return results;
   }
 
