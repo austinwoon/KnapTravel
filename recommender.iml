@@ -12,7 +12,12 @@
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
-      <configuration />
+      <configuration>
+        <fileset id="fileset" name="CorsConfig" removed="false">
+          <file>file://$MODULE_DIR$/src/main/java/algo/configs/CorsConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/algo/recommender/TravelApplication.java</file>
+        </fileset>
+      </configuration>
     </facet>
     <facet type="web" name="Web">
       <configuration>

@@ -9,7 +9,7 @@ import java.util.*;
 
 public class ScoringCalculator {
 
-    private static List<Location> locations = new ArrayList<>();
+    private List<Location> locations;
     private HashSet<String> preferences;
     private String filePath;
 
@@ -24,6 +24,7 @@ public class ScoringCalculator {
     public ScoringCalculator(HashSet<String> preferences, String filePath) {
         this.preferences = preferences;
         this.filePath = filePath;
+        this.locations = new ArrayList<Location>();
         this.generateLocationsWithScores();
     }
 

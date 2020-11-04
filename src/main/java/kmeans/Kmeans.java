@@ -4,12 +4,7 @@ import entities.Location;
 import entities.Coordinate;
 import org.apache.commons.text.StringEscapeUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -43,7 +38,7 @@ public class Kmeans {
             clusters = new HashMap<>();
         }
 
-        return getClusterMapping(lastState);
+        return getClusterMapping(lastState);;
     }
 
     /**
