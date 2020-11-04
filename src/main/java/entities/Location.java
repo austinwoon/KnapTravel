@@ -5,19 +5,31 @@ import lombok.Data;
 import java.util.Objects;
 import java.util.Map;
 
-public @Data class Location implements Comparable<Location> {
+public @Data
+class Location implements Comparable<Location> {
     private String name;
     private Coordinate coordinate;
     private double score;
     private double hours;
+    private String description;
+    private String openingHours;
+    private String price;
+    private String website;
+    private String address;
     private int hoursMultipliedByTwo; // whole hours needed for ILP in knapsack
 
-    public Location(String name, Coordinate coordinate, double score, double hours) {
+    public Location(String name, Coordinate coordinate, double score, double hours, String description,
+                    String website, String price, String openingHours, String address) {
         this.name = name;
         this.coordinate = coordinate;
         this.score = score;
         this.hours = hours;
-        this.hoursMultipliedByTwo = (int)(hours * 2);
+        this.description = description;
+        this.website = website;
+        this.price = price;
+        this.openingHours = openingHours;
+        this.address = address;
+        this.hoursMultipliedByTwo = (int) (hours * 2);
     }
 
     public Location(String name, Coordinate coordinate) {

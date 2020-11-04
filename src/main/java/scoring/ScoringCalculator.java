@@ -37,6 +37,33 @@ public class ScoringCalculator {
     for (JSONObject location : data) {
 
       double score = (double) location.get("score");
+      List<LinkedHashMap> properties = (List<LinkedHashMap>) location.get("properties");
+      String address = "";
+      String website = "";
+      String price = "";
+      String openingHours= "";
+
+      for (LinkedHashMap property : properties) {
+        System.out.println(property);
+        switch((String)property.get("key")) {
+          case "address":
+            address = property.get("value") + "";
+            break;
+
+          case "website":
+            website = property.get("value")+"";
+            break;
+
+          case "price":
+            price = property.get("value")+"";
+            break;
+
+          case "hours":
+            openingHours = property.get("value")+"";
+        }
+      }
+      String description = (String) location.get("intro");
+
       if ((int) location.get("popular") == 1) {
         score *= POPULAR_WEIGHT;
       }
@@ -58,7 +85,7 @@ public class ScoringCalculator {
       Map<String, Double> cm = (Map<String, Double>) location.get("coordinates");
       try {
         Coordinate coordinates = new Coordinate(cm.get("latitude"), cm.get("longitude"));
-        locations.add(new Location(name, coordinates, score, hours));
+        locations.add(new Location(name, coordinates, score, hours, description, website, price, openingHours, address));
       } catch (ClassCastException e) {
         System.out.println(location.get("name"));
       }
