@@ -2,6 +2,7 @@ package algo.recommender;
 
 import algo.models.ItineraryFormInputModel;
 import algo.models.ItineraryResponseModel;
+import algo.models.TagsResponseModel;
 import entities.Location;
 import kmeans.Kmeans;
 import location_selector.KnapsackLocationSelector;
@@ -16,6 +17,18 @@ import java.util.Map;
 
 @RestController
 public class AlgoController {
+
+  @GetMapping("/getTags/{city}")
+  public TagsResponseModel getTags(@PathVariable String city) {
+    // TODO: Either put data source in db, or make JSONReader return a List of Locations, getting List of Locations too tightly coupled with Scorer class
+    String dataSource = String.format("src/main/resources/data/%s-processed.json", city.toLowerCase());
+    HashSet<String> pref = new HashSet<>();
+
+    ScoringCalculator scorer = new ScoringCalculator(pref, dataSource);
+    List<String> tags = scorer.getFilteredTags(50);
+
+    return new TagsResponseModel(tags);
+  }
 
   @PostMapping("/getItinerary")
   public ItineraryResponseModel getItinerary(@RequestBody ItineraryFormInputModel request) throws Exception {
@@ -42,7 +55,6 @@ public class AlgoController {
     Map<Integer, List<Location>> selectedLocations = new HashMap<>();
     for (Integer i : clusters.keySet()) {
       LocationSelector selector = new KnapsackLocationSelector(clusters.get(i), timeConstraint);
-      System.out.println(selector.selectLocationsToVisit().size());
       selectedLocations.put(i, selector.selectLocationsToVisit());
     }
     return selectedLocations;
