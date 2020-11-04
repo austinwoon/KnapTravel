@@ -1,6 +1,7 @@
-package kmeans;
+package main;
 
 import entities.Location;
+import kmeans.Kmeans;
 import location_selector.GreedyLocationSelector;
 import location_selector.KnapsackLocationSelector;
 import location_selector.LocationSelector;
