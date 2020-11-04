@@ -1,6 +1,5 @@
-package location_picker;
+package location_selector;
 
-import entities.Coordinate;
 import entities.Location;
 
 import java.text.DecimalFormat;
@@ -29,12 +28,12 @@ public class KnapsackLocationSelector implements LocationSelector {
       for (int col = 0; col <= timeConstraint; col++) {
         if (row == 0 || col == 0) {
           table[row][col] = 0;
-        } else if (locations.get(row - 1).getHours() <= col) {
-          if (col - locations.get(row - 1).getHours() < 0) {
+        } else if (locations.get(row - 1).getHoursMultipliedByTwo() <= col) {
+          if (col - locations.get(row - 1).getHoursMultipliedByTwo() < 0) {
             table[row][col] = table[row - 1][col];
           } else {
             table[row][col] = Double.max(table[row - 1][col],
-                locations.get(row - 1).getScore() + table[row - 1][col - locations.get(row - 1).getHours()]);
+                locations.get(row - 1).getScore() + table[row - 1][col - locations.get(row - 1).getHoursMultipliedByTwo()]);
           }
         } else {
           table[row][col] = table[row - 1][col];

@@ -3,8 +3,6 @@ package scoring;
 import entities.Coordinate;
 import entities.Location;
 import jsonReader.JsonReader;
-import location_picker.KnapsackLocationSelector;
-import location_picker.LocationSelector;
 import org.json.simple.JSONObject;
 
 import java.util.*;
@@ -55,12 +53,12 @@ public class ScoringCalculator {
       }
 
       String name = (String) location.get("name");
-      double hours = (Double) location.get("hours_spent") * 2;
+      double hours = (Double) location.get("hours_spent");
 
       Map<String, Double> cm = (Map<String, Double>) location.get("coordinates");
       try {
         Coordinate coordinates = new Coordinate(cm.get("latitude"), cm.get("longitude"));
-        locations.add(new Location(name, coordinates, score, (int) hours));
+        locations.add(new Location(name, coordinates, score, hours));
       } catch (ClassCastException e) {
         System.out.println(location.get("name"));
       }

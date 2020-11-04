@@ -1,4 +1,4 @@
-package location_picker;
+package location_selector;
 
 import entities.Location;
 import java.util.List;
