@@ -15,6 +15,10 @@ export default {
         ]
     },
 
+    env: {
+        MAPBOX_API_KEY: process.env.MAPBOX_API_KEY,
+    },
+
     // Global CSS (https://go.nuxtjs.dev/config-css)
     css: [
         'ant-design-vue/dist/antd.css'

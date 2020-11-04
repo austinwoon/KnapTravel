@@ -38,7 +38,7 @@ public class Kmeans {
             clusters = new HashMap<>();
         }
 
-        return getClusterMapping(lastState);;
+        return getClusterMapping(lastState);
     }
 
     /**

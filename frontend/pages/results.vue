@@ -1,68 +1,57 @@
 <template>
   <div>
-
+    
+    <ItineraryCard
+        v-for="(dailyItinerary, i) in results"
+        :key="i+'itineraryCard'"
+        :dailyItinerary="dailyItinerary"
+        :title="`Day ${i + 1} Schedule`"
+    />
+  
   </div>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      results: [
-        {
-          day: 1,
-          destinations: [
-            {
-              name: "Asakusa",
-              lat: 130.9,
-              lng: -1.0,
-            },
-            {
-              name: "Shinjuku",
-              lat: 130.9,
-              lng: -1.0,
-            },
-            {
-              name: "Pepe",
-              lat: 130.9,
-              lng: -1.0,
-            },
-            {
-              name: "Asakusa",
-              lat: 130.9,
-              lng: -1.0,
-            },
-            {
-              name: "Asakusa",
-              lat: 130.9,
-              lng: -1.0,
-            },
-          ]
-        },
-        {
-          day: 2,
-          destinations: [
-            {
-              name: "Asakusa",
-              lat: 150.9,
-              lng: -3.0,
-            }
-          ]
-        },
+    import {BACKEND_URL} from "../assets/constants";
+    import ItineraryCard from "../components/ItineraryCard";
+    import MapPlot from "../components/MapPlot";
 
-      ]
+    export default {
+        components: {MapPlot, ItineraryCard},
+        data() {
+            return {
+                results: []
+            }
+        },
+        name: "results",
+        computed: {
+            formData() {
+                return this.$store.state.form;
+            }
+        },
+        mounted() {
+            const URL = `${BACKEND_URL}/getItinerary`;
+            //TODO (AUSTIN): Remove this dummy data
+            const requestBody = this.formData.city ? this.formData : {
+                lengthOfStay: 3,
+                timeConstraint: 8,
+                selectedTags: ["Museum"],
+                city: "Tokyo",
+            };
+
+            const {lengthOfStay: days, timeConstraint, selectedTags: interests, city} = requestBody;
+            this.$axios.$post(URL, {
+                days,
+                timeConstraint,
+                interests,
+                city,
+            }).then(({data}) => {
+                this.results = data;
+            }).catch(e => {
+                console.log(e);
+            })
+        }
     }
-  },
-  name: "results",
-  mounted: {
-    // TODO(Austin): call api here w form state
-  },
-  computed: {
-    formData() {
-      return this.$store.state.form;
-    }
-  }
-}
 </script>
 
 <style scoped>

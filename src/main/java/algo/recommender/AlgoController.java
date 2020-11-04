@@ -27,7 +27,7 @@ public class AlgoController {
     HashSet<String> pref = new HashSet<>();
 
     ScoringCalculator scorer = new ScoringCalculator(pref, dataSource);
-    List<String> tags = scorer.getFilteredTags(50);
+    List<String> tags = scorer.getFilteredTags(100);
 
     return new TagsResponseModel(tags);
   }
@@ -60,6 +60,7 @@ public class AlgoController {
       LocationSelector selector = new KnapsackLocationSelector(clusters.get(i), timeConstraint);
       selectedLocations.put(i, selector.selectLocationsToVisit());
     }
+
     return selectedLocations;
   }
 }

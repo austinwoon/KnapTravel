@@ -1,24 +1,39 @@
 <template>
   <div class="container">
     <div>
-      <a-card title="Travel Destination" class="card-style">
+      <a-card
+          title="Select City"
+          class="card-style"
+      >
+        <a-select
+            v-model="form.city"
+            placeholder="Please select city to visit"
+            @change="handleSelectCity()"
+            style="width: 120px"
+            class="card-style"
+        >
+          <template v-for="city in cities">
+            <a-select-option :value="city">
+              {{ city }}
+            </a-select-option>
+          </template>
+        </a-select>
+      </a-card>
+      
+      <a-card
+          title="Travel Destination"
+          class="card-style"
+          v-if="form.city"
+          :loading="loading"
+      >
         <a-form-model layout="vertical" :model="form">
-          <a-form-model-item label="City">
-            <a-select
-                v-model="form.city"
-                placeholder="Please select city to visit"
-                @change="handleSelectCity()"
-            >
-              <template v-for="city in cities">
-                <a-select-option :value="city">
-                  {{ city }}
-                </a-select-option>
-              </template>
-            </a-select>
-          </a-form-model-item>
-          
+  
           <a-form-model-item label="Length of Stay (Days)">
             <a-input-number v-model="form.lengthOfStay" :min="1"/>
+          </a-form-model-item>
+          
+          <a-form-model-item label="Daily Max Visiting Time">
+            <a-input-number v-model="form.timeConstraint" :min="1" :max="20"/>
           </a-form-model-item>
           
           <a-form-model-item label="Activity Interests">
@@ -64,9 +79,11 @@
                 cities: [
                     "Tokyo"
                 ],
+                loading: true,
                 form: {
                     city: "",
                     lengthOfStay: 1,
+                    timeConstraint: 0,
                     tags: [],
                     selectedTags: [],
                 }
@@ -74,18 +91,17 @@
         },
         methods: {
             async handleSelectCity() {
+                this.loading = true;
                 const getTagsUrl = `${BACKEND_URL}/getTags/${this.form.city}`;
-                
-                try {
-                  console.log(getTagsUrl);
-                    const res = await this.$axios.$get(getTagsUrl);
-                    console.log(res);
-                    this.form.tags = res.tags;
 
+                try {
+                    const {tags} = await this.$axios.$get(getTagsUrl);
+                    this.form.tags = tags;
+                    this.loading = false;
                 } catch (e) {
                     console.log(e);
                 }
-                console.log(this.form.tags);
+
             },
             submitForm() {
                 // TODO(Austin): Add validation if not laze
