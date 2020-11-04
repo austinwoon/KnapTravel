@@ -63,7 +63,7 @@ public class ScoringCalculator {
     new ScoringCalculator(pref);
     KnapsackLocations knapper =new KnapsackLocations();
     for (Location location : knapper.getTopLocations(getLocations())) {
-      System.out.println(location.getName() + ": " + location.getScore());
+      System.out.println(location.getName() + ": " + location.getScore() + ", " + location.getHours());
     }
   }
 

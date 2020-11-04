@@ -3,6 +3,7 @@ package knapsack;
 import entities.Coordinate;
 import entities.Location;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class KnapsackLocations {
     int traverseRow = num;
     int traverseCol = TIME_LIMIT;
 
-    while (traverseRow >= 0) {
+    while (traverseRow >= 0 && traverseCol >= 0) {
 
       double biggest = table[traverseRow][traverseCol];
 
@@ -51,27 +52,30 @@ public class KnapsackLocations {
       }
       Location shortlisted = locations.get(traverseRow - 1);
       results.add(shortlisted);
-      System.out.println("row: " + traverseRow + "col: " + traverseCol);
       System.out.println(shortlisted.getName() + ", " + shortlisted.getHours() + ", " + shortlisted.getScore());
       biggest -= shortlisted.getScore();
       if (biggest == 0) {
         break;
       }
       traverseRow--;
-      while (traverseCol >= 0 && biggest != table[traverseRow][traverseCol]) {
+      DecimalFormat df = new DecimalFormat("#.########");
+      System.out.println(df.format(table[traverseRow][traverseCol]));
+      while (traverseCol >= 0 && !df.format(biggest).equals(df.format(table[traverseRow][traverseCol]))) {
         traverseCol--;
       }
+      System.out.println("biggest: " + biggest);
+      System.out.println("row: " + traverseRow + "col: " + traverseCol);
     }
     return results;
   }
 
   public static void main(String[] args) {
     Coordinate co = new Coordinate(4.0,3.0);
-    Location loc1 = new Location("hi", co, 5.0, 14);
-    Location loc2 = new Location("hi", co, 6.0, 5);
-    Location loc3 = new Location("hi", co, 7.0, 8);
-    Location loc4 = new Location("hi", co, 5.0, 7);
-    Location loc5 = new Location("hi", co, 5.0, 4);
+    Location loc1 = new Location("hi", co, 5.0, 3);
+    Location loc2 = new Location("hi", co, 6.0, 3);
+    Location loc3 = new Location("hi", co, 7.0, 3);
+    Location loc4 = new Location("hi", co, 5.0, 3);
+    Location loc5 = new Location("hi", co, 5.0, 3);
 
     List<Location> locations = new ArrayList<>();
     locations.add(loc1);
