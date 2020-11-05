@@ -76,7 +76,7 @@
                 ]
             }
         },
-        async created() {
+        async mounted() {
             try {
               const { results : photos } = await this.$axios
                   .$get(`https://api.unsplash.com/search/photos`, {

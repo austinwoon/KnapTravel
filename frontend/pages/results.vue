@@ -30,22 +30,29 @@
       </a-row>
     </a-row>
     
-    <a-row class="daily-itinerary-container" v-if="!loading">
-      <a-col
-          style="margin: 24px 24px 24px 24px; min-width: 800px"
-          v-for="(dailyItinerary, i) in results"
-          :key="key + '' + i"
-      >
-        <ItineraryCard
-            :dailyItinerary="dailyItinerary"
-            :title="`Day ${i + 1} Schedule`"
-        />
-      </a-col>
-    </a-row>
+    <div v-if="!formData.city">
+      <a-row type="flex" justify="center" align="middle">
+        <h1> PLEASE SELECT A CITY </h1>
+      </a-row>
+    </div>
     
-    <a-row type="flex" justify="center" align="center" v-else>
-      <a-icon style="margin-top: 36px; fontSize: 100px" type="loading"/>
-    </a-row>
+    <div v-else>
+      <a-spin :spinning="loading" size="large" tip="Loading">
+        <a-row class="daily-itinerary-container">
+          <a-col
+              style="margin: 24px 24px 24px 24px; min-width: 800px"
+              v-for="(dailyItinerary, i) in results"
+              :key="key + '' + i"
+          >
+            <ItineraryCard
+                :dailyItinerary="dailyItinerary"
+                :title="`Day ${i + 1} Schedule`"
+            />
+          </a-col>
+        </a-row>
+      </a-spin>
+    </div>
+  
   </a-row>
 </template>
 
@@ -69,8 +76,8 @@
                 return this.$store.state.form;
             },
             key() {
-                const { lengthOfStay, timeConstraint, city } = this.$store.state.form;
-                return city + lengthOfStay + timeConstraint ;
+                const {lengthOfStay, timeConstraint, city} = this.$store.state.form;
+                return city + lengthOfStay + timeConstraint;
             }
         },
         methods: {

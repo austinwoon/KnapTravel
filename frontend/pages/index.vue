@@ -14,11 +14,15 @@
       
       <a-row class="container" type="flex" :gutter="[24, 24]">
         <a-col v-for="data in presetData">
-          <itinerary-image-card
-              :cover-img="data.imgSrc"
-              :title="data.title"
-              :form-data="data.formData"
-          />
+          <div @click="handleClickImageCard(e, data)">
+            <NuxtLink to="/results">
+              <itinerary-image-card
+                  :cover-img="data.imgSrc"
+                  :title="data.title"
+                  :form-data="data.formData"
+              />
+            </NuxtLink>
+          </div>
         </a-col>
       </a-row>
     </a-row>
@@ -41,7 +45,7 @@
                         title: 'Four Day Trip to Tokyo',
                         imgSrc: 'tokyo',
                         formData: {
-                            city: "tokyo",
+                            city: "Tokyo",
                             lengthOfStay: 4,
                             timeConstraint: 8,
                             tags: [],
@@ -52,7 +56,7 @@
                         title: 'Three Day Trip to New York',
                         imgSrc: 'new-york-city',
                         formData: {
-                            city: "new york city",
+                            city: "New York City",
                             lengthOfStay: 3,
                             timeConstraint: 8,
                             tags: [],
@@ -63,7 +67,7 @@
                         title: 'Two Day Trip to Osaka',
                         imgSrc: 'osaka',
                         formData: {
-                            city: "osaka",
+                            city: "Osaka",
                             lengthOfStay: 2,
                             timeConstraint: 8,
                             tags: [],
@@ -74,8 +78,19 @@
                         title: 'Four Day Trip to Taipei',
                         imgSrc: 'taipei',
                         formData: {
-                            city: "taipei",
+                            city: "Taipei",
                             lengthOfStay: 4,
+                            timeConstraint: 8,
+                            tags: [],
+                            selectedTags: [],
+                        },
+                    },
+                    {
+                        title: 'Two Day Trip to Paris',
+                        imgSrc: 'paris',
+                        formData: {
+                            city: "Paris",
+                            lengthOfStay: 2,
                             timeConstraint: 8,
                             tags: [],
                             selectedTags: [],
@@ -101,6 +116,9 @@
             }
         },
         methods: {
+            async handleClickImageCard(e, data) {
+                this.$store.commit('form/updateState', data.formData);
+            },
             async handleSelectCity() {
                 this.loading = true;
                 const getTagsUrl = `${BACKEND_URL}/getTags/${this.form.city}`;

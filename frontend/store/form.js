@@ -1,11 +1,5 @@
-// export const state = () => ({
-//   city: "",
-//   selectedTags: [],
-//   lengthOfStay: 0,
-// })
-
 export const state = () => ({
-  city: "Tokyo",
+  city: "",
   selectedTags: [],
   lengthOfStay: 4,
   timeConstraint: 8,

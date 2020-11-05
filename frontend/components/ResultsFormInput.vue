@@ -24,14 +24,14 @@
         <a-input-number v-model="form.lengthOfStay" :min="1"/>
       </a-form-model-item>
       
-      <a-form-model-item label="Daily Max Visiting Time">
+      <a-form-model-item label="Daily Max Visiting Hours">
         <a-input-number v-model="form.timeConstraint" :min="1" :max="20"/>
       </a-form-model-item>
       
       <br/>
       <br/>
       
-      <a-form-model-item label="Activity Interests">
+      <a-form-model-item label="Activity Interests" v-if="form.tags.length > 0">
         <template v-for="tag in form.tags">
           <a-checkable-tag
               :key="tag"

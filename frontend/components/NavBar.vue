@@ -20,13 +20,6 @@
       </NuxtLink>
     </a-menu-item>
     
-    <a-menu-item>
-      <NuxtLink to="/saved">
-        <a-icon type="pushpin"/>
-        Saved
-      </NuxtLink>
-    </a-menu-item>
-    
     <a-menu-item style="float: right">
       <a-avatar src="/austin_avatar.jpeg"></a-avatar>
       Hi, <span style="font-weight: bolder; font-size: 16px">Austin</span>

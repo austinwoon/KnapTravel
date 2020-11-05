@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     
+    
     <img
         class="cover-img"
         slot="cover"
