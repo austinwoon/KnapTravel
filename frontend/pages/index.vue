@@ -185,7 +185,7 @@
   }
   
   .main-title {
-    color: #6DB3F2;
+    color: aqua;
     font-size: 80px;
     font-weight: bolder;
     letter-spacing: 35px;
