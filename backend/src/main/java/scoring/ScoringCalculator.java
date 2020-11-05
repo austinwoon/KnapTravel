@@ -25,7 +25,7 @@ public class ScoringCalculator {
     public ScoringCalculator(HashSet<String> preferences, String filePath) {
         this.preferences = preferences;
         this.filePath = filePath;
-        this.locations = new ArrayList<Location>();
+        this.locations = new ArrayList<>();
         this.generateLocationsWithScores();
     }
 
@@ -33,7 +33,8 @@ public class ScoringCalculator {
      * Generate static locations attribute from given preferences and filePath inputs
      */
     private void generateLocationsWithScores() {
-        JsonReader jr = new JsonReader(filePath);
+        String resource = getClass().getResource(filePath).getFile();
+        JsonReader jr = new JsonReader(resource);
         List<JSONObject> data = jr.getContents();
 
         double latSum = 0;
