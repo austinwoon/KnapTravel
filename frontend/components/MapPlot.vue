@@ -37,9 +37,29 @@
                         accessToken: process.env.MAPBOX_API_KEY
                     }
                 ).addTo(mapDiv);
+                
+                const coordinates = this.plotPoints.map(point => point.coordinates);
+                
+                
+                L.polyline(coordinates, {
+                    color: 'blue'
+                }).addTo(mapDiv);
+                
 
-                this.plotPoints.forEach(point => {
-                    L.marker(point.coordinates, {opacity : 1.0 }
+                this.plotPoints.forEach((point, i) => {
+                    const options = {
+                        opacity: 1.0
+                    };
+                    
+                    if (i === 0 ) {
+                        options.icon = L.icon({iconUrl: '/start.svg', iconSize: [36, 36]})
+                    }
+                    
+                    if (i === this.plotPoints.length - 1) {
+                        options.icon = L.icon({iconUrl: '/flag.svg', iconSize: [36, 36]})
+                    }
+                    
+                    L.marker(point.coordinates, options
                     ).bindTooltip(point.name, {
                         direction: 'top',
                         permanent: true,
