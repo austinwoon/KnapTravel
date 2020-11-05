@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class CircleMain {
     public static void main(String[] args) {
-        JsonReader js = new JsonReader("/src/main/resources/data/tokyo-processed.json");
+        JsonReader js = new JsonReader("/src/main/resources/data/tokyo.json");
         List<Location> locations = new ArrayList<>();
 
         for (JSONObject datapoint : js.getContents()) {
