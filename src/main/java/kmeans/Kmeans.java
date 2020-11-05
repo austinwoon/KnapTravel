@@ -14,11 +14,16 @@ public class Kmeans {
     private static final Random random = new Random();
 
     public static Map<Integer, List<Location>> fit(List<Location> locations, int k, int maxIterations) {
+        if (k == 1) {
+            Map<Integer, List<Location>> c = new HashMap<>();
+            c.put(0, locations);
+            return c;
+        }
         applyPreconditions(locations, k, maxIterations);
 
-        List<Centroid> centroids = randomCentroids(locations, k);
         Map<Centroid, List<Location>> clusters = new HashMap<>();
         Map<Centroid, List<Location>> lastState = new HashMap<>();
+        List<Centroid> centroids = randomCentroids(locations, k);
 
         for (int i = 0; i < maxIterations; i++) {
             boolean isLastIteration = i == maxIterations - 1;
