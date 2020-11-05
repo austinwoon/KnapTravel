@@ -92,6 +92,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>algo.recommender.TravelApplication</mainClass>
+				</configuration>
 			</plugin>
 
 			<plugin>
