@@ -9,7 +9,7 @@
           :md="{ span: 24 }"
           :lg="{ span: 11 }"
           :xl="{ span: 11 }"
-          :xxl="{ span: 7 }"
+          :xxl="{ span: 11 }"
           v-for="(dailyItinerary, i) in results"
           :key="i+'itineraryCard'"
       >

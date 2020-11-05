@@ -27,7 +27,7 @@
           :loading="loading"
       >
         <a-form-model layout="vertical" :model="form">
-  
+          
           <a-form-model-item label="Length of Stay (Days)">
             <a-input-number v-model="form.lengthOfStay" :min="1"/>
           </a-form-model-item>
@@ -75,9 +75,7 @@
     export default {
         data() {
             return {
-                cities: [
-                    "Tokyo"
-                ],
+                cities: [],
                 loading: true,
                 form: {
                     city: "",
@@ -86,6 +84,15 @@
                     tags: [],
                     selectedTags: [],
                 }
+            }
+        },
+        async mounted() {
+            try {
+                const { data } = await this.$axios.get(`${BACKEND_URL}/getCities`);
+                const { availableCities } = data;
+                this.cities = availableCities;
+            } catch {
+                this.cities = ["Tokyo", "New York"];
             }
         },
         methods: {

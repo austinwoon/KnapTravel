@@ -1,5 +1,6 @@
 package algo.recommender;
 
+import algo.models.CitiesResponseModel;
 import algo.models.ItineraryFormInputModel;
 import algo.models.ItineraryResponseModel;
 import algo.models.TagsResponseModel;
@@ -32,6 +33,12 @@ public class AlgoController {
     List<String> tags = scorer.getFilteredTags(100);
 
     return new TagsResponseModel(tags);
+  }
+
+  @CrossOrigin(origins = "http://localhost:3000")
+  @GetMapping("/getCities")
+  public CitiesResponseModel getTags() {
+    return new CitiesResponseModel();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
