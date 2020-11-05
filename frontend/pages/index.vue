@@ -189,7 +189,7 @@
     font-size: 80px;
     font-weight: bolder;
     letter-spacing: 35px;
-    text-shadow: 2px 2px darkslategrey;
+    text-shadow: 3px 3px black;
   }
   
   .main-subtitle {
