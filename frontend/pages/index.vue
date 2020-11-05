@@ -1,82 +1,87 @@
 <template>
-  <div class="container">
-    <div>
-      <a-card
-          title="Select City"
-          class="card-style"
-      >
-        <a-select
-            v-model="form.city"
-            placeholder="Please select city to visit"
-            @change="handleSelectCity()"
-            style="width: 120px"
-            class="card-style"
-        >
-          <template v-for="city in cities">
-            <a-select-option :value="city">
-              {{ city }}
-            </a-select-option>
-          </template>
-        </a-select>
-      </a-card>
-      
-      <a-card
-          title="Travel Destination"
-          class="card-style"
-          v-if="form.city"
-          :loading="loading"
-      >
-        <a-form-model layout="vertical" :model="form">
-          
-          <a-form-model-item label="Length of Stay (Days)">
-            <a-input-number v-model="form.lengthOfStay" :min="1"/>
-          </a-form-model-item>
-          
-          <a-form-model-item label="Daily Max Visiting Time">
-            <a-input-number v-model="form.timeConstraint" :min="1" :max="20"/>
-          </a-form-model-item>
-          
-          <a-form-model-item label="Activity Interests">
-            <template v-for="tag in form.tags">
-              <a-checkable-tag
-                  :key="tag"
-                  :checked="form.selectedTags.indexOf(tag) > -1"
-                  @change="checked => handleChange(tag, checked)"
-              >
-                {{ tag }}
-              </a-checkable-tag>
-            </template>
-          </a-form-model-item>
-          
-          <a-form-model-item>
-            <NuxtLink to="/results">
-              <a-button
-                  type="primary"
-                  style="margin-right: 16px"
-                  @click="submitForm"
-              >
-                Generate Itinerary
-              </a-button>
-            </NuxtLink>
-            
-            <a-button>
-              Cancel
-            </a-button>
-          </a-form-model-item>
-        </a-form-model>
-      </a-card>
+  <div>
+    <div class="container searchBar background-img">
+      <a-row type="flex" align="middle" justify="center">
+        <ResultsFormInput homePage/>
+      </a-row>
     </div>
+    
+    <a-row style="margin-top: 16px">
+      
+      <a-row type="flex" justify="center" align="middle">
+        <h1 style="letter-spacing: 8px">EXPLORE  ITINERARIES</h1>
+      </a-row>
+      
+      <a-row class="container" type="flex" :gutter="[24, 24]">
+        <a-col v-for="data in presetData">
+          <itinerary-image-card
+              :cover-img="data.imgSrc"
+              :title="data.title"
+              :form-data="data.formData"
+          />
+        </a-col>
+      </a-row>
+    </a-row>
   </div>
 </template>
 
 <script>
     import {BACKEND_URL} from "../assets/constants";
+    import ItineraryImageCard from "../components/ItineraryImageCard";
+    import ResultsFormInput from "../components/ResultsFormInput";
 
     export default {
+        components: {ResultsFormInput, ItineraryImageCard},
         data() {
             return {
                 cities: [],
                 loading: true,
+                presetData: [
+                    {
+                        title: 'Four Day Trip to Tokyo',
+                        imgSrc: 'tokyo',
+                        formData: {
+                            city: "tokyo",
+                            lengthOfStay: 4,
+                            timeConstraint: 8,
+                            tags: [],
+                            selectedTags: [],
+                        },
+                    },
+                    {
+                        title: 'Three Day Trip to New York',
+                        imgSrc: 'new-york-city',
+                        formData: {
+                            city: "new york city",
+                            lengthOfStay: 3,
+                            timeConstraint: 8,
+                            tags: [],
+                            selectedTags: [],
+                        },
+                    },
+                    {
+                        title: 'Two Day Trip to Osaka',
+                        imgSrc: 'osaka',
+                        formData: {
+                            city: "osaka",
+                            lengthOfStay: 2,
+                            timeConstraint: 8,
+                            tags: [],
+                            selectedTags: [],
+                        },
+                    },
+                    {
+                        title: 'Four Day Trip to Taipei',
+                        imgSrc: 'taipei',
+                        formData: {
+                            city: "taipei",
+                            lengthOfStay: 4,
+                            timeConstraint: 8,
+                            tags: [],
+                            selectedTags: [],
+                        },
+                    },
+                ],
                 form: {
                     city: "",
                     lengthOfStay: 1,
@@ -88,8 +93,8 @@
         },
         async mounted() {
             try {
-                const { data } = await this.$axios.get(`${BACKEND_URL}/getCities`);
-                const { availableCities } = data;
+                const {data} = await this.$axios.get(`${BACKEND_URL}/getCities`);
+                const {availableCities} = data;
                 this.cities = availableCities;
             } catch {
                 this.cities = ["Tokyo", "New York"];
@@ -101,7 +106,7 @@
                 const getTagsUrl = `${BACKEND_URL}/getTags/${this.form.city}`;
 
                 try {
-                    const { tags } = await this.$axios.$get(getTagsUrl);
+                    const {tags} = await this.$axios.$get(getTagsUrl);
                     this.form.tags = tags;
                     this.loading = false;
                 } catch (e) {
@@ -122,7 +127,20 @@
 </script>
 
 <style>
-  .card-style {
-    max-width: 50%;
+  .container {
+    justify-content: space-evenly;
+    display: flex;
+  }
+  
+  .background-img {
+    background-image: url("~assets/img/background.jpg");
+    background-size: cover;
+    background-color: #6DB3F2;
+    background-position: center center;
+  }
+  
+  .searchBar {
+    height: 35vh;
+    width: 100%;
   }
 </style>

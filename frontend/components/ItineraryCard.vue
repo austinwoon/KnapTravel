@@ -5,7 +5,7 @@
         <download-csv
             :name="fileName"
             :data="downloadData"
-            :key="downloadFileKeys"
+            :labels="downloadFileKeys"
         >
           <a-button icon="download" type="primary">Download</a-button>
         </download-csv>

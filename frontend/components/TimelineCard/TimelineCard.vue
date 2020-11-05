@@ -1,6 +1,5 @@
 <template>
   <a-collapse
-      
       :expand-icon-position="visitSequence % 2 == 0 ? 'left' : 'right'"
   >
     <template #expandIcon="props">
@@ -17,13 +16,19 @@
     </template>
     
     <a-collapse-panel :header="pointOfInterest.name">
+      <img
+          v-if="this.imgSrc"
+          class="location-img"
+          :src="this.imgSrc"
+          alt="Photo Of Location"
+      />
       
       <p class="poi-desc">
         {{ pointOfInterest.description }}
       </p>
       
       <CardDetailRow v-for="detail in details"
-                     :detail="pointOfInterest[detail.key]"
+                     :detail="`${pointOfInterest[detail.key]}`"
                      :null-message="detail.nullMessage"
                      :key="detail.key + pointOfInterest.name"
       >
@@ -45,6 +50,7 @@
         components: {CardDetailRow},
         data() {
             return {
+                imgSrc: '',
                 details: [
                     {
                         key: "openingHours",
@@ -70,6 +76,25 @@
                 ]
             }
         },
+        async created() {
+            try {
+              const { results : photos } = await this.$axios
+                  .$get(`https://api.unsplash.com/search/photos`, {
+                      params: {
+                          page: 1,
+                          query: this.pointOfInterest.name,
+                          w: 450,
+                          h: 300,
+                          dpr: 2,
+                          client_id: process.env.UNSPLASH_ACCESS_KEY
+                      }
+                  });
+              
+              this.imgSrc = photos[0].urls.small;
+            } catch (e) {
+                // console.log("FAILED TO CALL UNSPLASH", e);
+            }
+        },
         props: {
             pointOfInterest: Object,
             visitSequence: Number,
@@ -78,6 +103,14 @@
 </script>
 
 <style scoped>
+  .location-img {
+    max-width: 300px;
+    max-height: 250px;
+    width: 90%;
+    height: 90%;
+    margin: 10px 0 10px 0;
+    object-fit: cover;
+  }
 .poi-desc {
   text-align: left;
 }

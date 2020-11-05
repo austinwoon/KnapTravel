@@ -1,23 +1,40 @@
 <template>
-  <div style="width:100vw">
-    <a-row>
-      <ResultsFormInput>
-      
-      </ResultsFormInput>
+  <a-row>
+    
+    <a-row type="flex" align="middle" justify="center">
+      <ResultsFormInput
+          style="margin-top: 24px"
+          v-on:generateItinerary="generateItinerary"
+      />
     </a-row>
     
-    <a-row type="flex" gutter="md">
+    <a-row
+        style="margin-top: 24px; letter-spacing: 5px; text-transform: uppercase"
+    
+    >
+      <a-row
+          type="flex"
+          align="middle"
+          justify="center"
+      >
+        <h1>Your Itinerary</h1>
+      </a-row>
+      
+      <a-row
+          type="flex"
+          align="middle"
+          justify="center"
+      >
+        <span>Horizontal Scroll to View  More</span>
+        <a-icon type="arrow-right"/>
+      </a-row>
+    </a-row>
+    
+    <a-row class="daily-itinerary-container" v-if="!loading">
       <a-col
-          style="margin: 0 16px 0 16px"
-          :span="7"
-          :xs="{ span: 24 }"
-          :sm="{ span: 24 }"
-          :md="{ span: 24 }"
-          :lg="{ span: 11 }"
-          :xl="{ span: 11 }"
-          :xxl="{ span: 11 }"
+          style="margin: 24px 24px 24px 24px; min-width: 800px"
           v-for="(dailyItinerary, i) in results"
-          :key="i+'itineraryCard'"
+          :key="key + '' + i"
       >
         <ItineraryCard
             :dailyItinerary="dailyItinerary"
@@ -25,7 +42,11 @@
         />
       </a-col>
     </a-row>
-  </div>
+    
+    <a-row type="flex" justify="center" align="center" v-else>
+      <a-icon style="margin-top: 36px; fontSize: 100px" type="loading"/>
+    </a-row>
+  </a-row>
 </template>
 
 <script>
@@ -38,40 +59,56 @@
         components: {ResultsFormInput, MapPlot, ItineraryCard},
         data() {
             return {
-                results: []
+                results: [],
+                loading: false,
             }
         },
         name: "results",
         computed: {
             formData() {
                 return this.$store.state.form;
+            },
+            key() {
+                const { lengthOfStay, timeConstraint, city } = this.$store.state.form;
+                return city + lengthOfStay + timeConstraint ;
+            }
+        },
+        methods: {
+            async generateItinerary() {
+                this.loading = true;
+                const URL = `${BACKEND_URL}/getItinerary`;
+                //TODO (AUSTIN): Remove this dummy data
+                const requestBody = this.formData.city ? this.formData : {
+                    lengthOfStay: 3,
+                    timeConstraint: 8,
+                    selectedTags: ["Museum"],
+                    city: "Tokyo",
+                };
+
+                const {lengthOfStay: days, timeConstraint, selectedTags: interests, city} = requestBody;
+                this.$axios.$post(URL, {
+                    days,
+                    timeConstraint,
+                    interests,
+                    city,
+                }).then(({data}) => {
+                    this.results = data;
+                    this.loading = false;
+                }).catch(e => {
+                    console.log(e);
+                })
             }
         },
         mounted() {
-            const URL = `${BACKEND_URL}/getItinerary`;
-            //TODO (AUSTIN): Remove this dummy data
-            const requestBody = this.formData.city ? this.formData : {
-                lengthOfStay: 3,
-                timeConstraint: 8,
-                selectedTags: ["Museum"],
-                city: "Tokyo",
-            };
-
-            const {lengthOfStay: days, timeConstraint, selectedTags: interests, city} = requestBody;
-            this.$axios.$post(URL, {
-                days,
-                timeConstraint,
-                interests,
-                city,
-            }).then(({data}) => {
-                this.results = data;
-            }).catch(e => {
-                console.log(e);
-            })
+            this.generateItinerary();
         }
     }
 </script>
 
 <style scoped>
+  .daily-itinerary-container {
+    display: flex;
+    overflow: auto;
+  }
 
 </style>
