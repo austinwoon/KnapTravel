@@ -39,12 +39,11 @@
                 ).addTo(mapDiv);
 
                 this.plotPoints.forEach(point => {
-                    L.marker(point.coordinates
+                    L.marker(point.coordinates, {opacity : 1.0 }
                     ).bindTooltip(point.name, {
                         direction: 'top',
                         permanent: true,
-                        offset: [-15, -10]
-                    }).addTo(mapDiv)
+                        offset: [-15, -10]}).addTo(mapDiv)
                 })
             }
         },
