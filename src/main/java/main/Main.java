@@ -19,7 +19,7 @@ public class Main {
 
         HashSet<String> pref = new HashSet<>();
         pref.add("Museums");
-        ScoringCalculator scorer = new ScoringCalculator(pref, "src/main/resources/data/tokyo-processed.json");
+        ScoringCalculator scorer = new ScoringCalculator(pref, "src/main/resources/data/tokyo.json");
 
         List<Location> locations = scorer.getLocations();
         Map<Integer, List<Location>> clusters = Kmeans.fit(locations, 5, 100000);
