@@ -101,7 +101,7 @@
                 const getTagsUrl = `${BACKEND_URL}/getTags/${this.form.city}`;
 
                 try {
-                    const {tags} = await this.$axios.$get(getTagsUrl);
+                    const { tags } = await this.$axios.$get(getTagsUrl);
                     this.form.tags = tags;
                     this.loading = false;
                 } catch (e) {

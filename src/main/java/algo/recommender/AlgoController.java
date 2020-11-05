@@ -24,9 +24,9 @@ public class AlgoController {
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/getTags/{city}")
   public TagsResponseModel getTags(@PathVariable String city) {
+    String cityFormatted = city.toLowerCase().replace(' ', '-'); // get city in correct format
     // TODO: Either put data source in db, or make JSONReader return a List of Locations, getting List of Locations too tightly coupled with Scorer class
-    System.out.println("CITY>>>>>>>>>>>>>>>" + city);
-    String dataSource = String.format("src/main/resources/data/%s.json", city.toLowerCase());
+    String dataSource = String.format("src/main/resources/data/%s.json", cityFormatted);
     HashSet<String> pref = new HashSet<>();
 
     ScoringCalculator scorer = new ScoringCalculator(pref, dataSource);

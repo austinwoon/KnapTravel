@@ -16,7 +16,7 @@ public class ScoringCalculator {
 
     private static final double PREFERENCE_WEIGHT = 1.5;
     private static final double POPULAR_WEIGHT = 1.2;
-    private static Map<String, Integer> tagCount = new HashMap<>();
+    private Map<String, Integer> tagCount = new HashMap<>();
 
     /**
      * @param preferences
@@ -117,7 +117,7 @@ public class ScoringCalculator {
 
     public Coordinate getCenter() { return center; }
 
-    public static Map<String, Integer> getTagCount() {
+    public Map<String, Integer> getTagCount() {
         return tagCount;
     }
 

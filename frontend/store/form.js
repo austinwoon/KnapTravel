@@ -1,8 +1,15 @@
+// export const state = () => ({
+//   city: "",
+//   selectedTags: [],
+//   lengthOfStay: 0,
+// })
+
 export const state = () => ({
-  city: "",
+  city: "Tokyo",
   selectedTags: [],
-  lengthOfStay: 0,
-})
+  lengthOfStay: 4,
+  timeConstraint: 8,
+});
 
 export const mutations = {
   updateState(state, formInputs) {

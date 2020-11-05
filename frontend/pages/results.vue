@@ -1,5 +1,11 @@
 <template>
   <div style="width:100vw">
+    <a-row>
+      <ResultsFormInput>
+      
+      </ResultsFormInput>
+    </a-row>
+    
     <a-row type="flex" gutter="md">
       <a-col
           style="margin: 0 16px 0 16px"
@@ -19,7 +25,6 @@
         />
       </a-col>
     </a-row>
-  
   </div>
 </template>
 
@@ -27,9 +32,10 @@
     import {BACKEND_URL} from "../assets/constants";
     import ItineraryCard from "../components/ItineraryCard";
     import MapPlot from "../components/MapPlot";
+    import ResultsFormInput from "../components/ResultsFormInput";
 
     export default {
-        components: {MapPlot, ItineraryCard},
+        components: {ResultsFormInput, MapPlot, ItineraryCard},
         data() {
             return {
                 results: []

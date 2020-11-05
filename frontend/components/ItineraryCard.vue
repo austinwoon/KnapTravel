@@ -83,17 +83,18 @@
         },
         data() {
             return {
-                downloadFileKeys: ['name', 'description', 'visitDuration', 'openingHours', 'website', 'address']
+                downloadFileKeys: ['name', 'price', 'description', 'visitDuration', 'openingHours', 'website', 'address']
             }
         },
         computed: {
             downloadData() {
                 return Object.keys(this.dailyItinerary).map(day => {
                     const dayDetails = this.dailyItinerary[day];
-                    const {name, description, hours: visitDuration, openingHours, website, address} = dayDetails;
+                    const {name, price, description, hours: visitDuration, openingHours, website, address} = dayDetails;
                     return ({
                         name,
                         description,
+                        price,
                         visitDuration,
                         openingHours,
                         website,
