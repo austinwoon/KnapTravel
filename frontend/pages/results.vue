@@ -1,5 +1,5 @@
 <template>
-  <a-row>
+  <a-row class="background">
     
     <a-row type="flex" align="middle" justify="center">
       <ResultsFormInput
@@ -125,6 +125,10 @@
   .daily-itinerary-container::before, .daily-itinerary-container::after {
     margin: auto;
     content: '';
+  }
+  
+  .background {
+    background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
   }
 
 </style>

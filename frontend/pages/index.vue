@@ -1,18 +1,24 @@
 <template>
   <div>
     <div class="container">
-      <a-row class="searchBar background-img" type="flex" align="middle" justify="center">
-        <ResultsFormInput homePage/>
+      <a-row class="background-img background-container">
+        <div class="dark-overlay"></div>
+        <a-row class="background-container">
+          <span class="main-title">KNAPTRAVEL</span>
+          <span class="main-subtitle">DISCOVER PAIN-FREE HOLIDAY PLANNING TODAY</span>
+        </a-row>
+        <a-row>
+          <ResultsFormInput homePage/>
+        </a-row>
       </a-row>
     </div>
     
-    <a-row style="margin-top: 16px">
-      
+    <a-row class="secondary-background">
       <a-row type="flex" justify="center" align="middle">
         <a-divider>
-          <span style="font-size: 30px; letter-spacing: 8px">EXPLORE  ITINERARIES</span>
+          <span class="secondary-subtitle">EXPLORE  ITINERARIES</span>
         </a-divider>
-        
+      
       </a-row>
       
       <a-row class="container" type="flex" :gutter="[24, 24]">
@@ -158,10 +164,56 @@
     background-size: cover;
     background-color: #6DB3F2;
     background-position: center center;
-  }
-  
-  .searchBar {
     height: 50vh;
     width: 100%;
   }
+  
+  .background-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .dark-overlay {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .25);
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  .main-title {
+    color: #6DB3F2;
+    font-size: 80px;
+    font-weight: bolder;
+    letter-spacing: 35px;
+    text-shadow: 2px 2px darkslategrey;
+  }
+  
+  .main-subtitle {
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: whitesmoke;
+    text-shadow: 1px 1px darkslategrey;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  
+  .secondary-subtitle {
+    color: black;
+    /*text-shadow: 2px 2px darkslategrey;*/
+    font-size: 35px;
+    letter-spacing: 8px;
+  }
+  
+  .secondary-background {
+    /*background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);*/
+    padding: 8px 0 24px 0;
+    min-height: 50vh;
+    height: 100%;
+  }
+
 </style>
