@@ -26,7 +26,7 @@ public class AlgoController {
   public TagsResponseModel getTags(@PathVariable String city) {
     String cityFormatted = city.toLowerCase().replace(' ', '-'); // get city in correct format
     // TODO: Either put data source in db, or make JSONReader return a List of Locations, getting List of Locations too tightly coupled with Scorer class
-    String dataSource = String.format("src/main/resources/data/%s.json", cityFormatted);
+    String dataSource = String.format("backend/src/main/resources/data/%s.json", cityFormatted);
     HashSet<String> pref = new HashSet<>();
 
     ScoringCalculator scorer = new ScoringCalculator(pref, dataSource);
@@ -44,10 +44,10 @@ public class AlgoController {
   @CrossOrigin(origins = "http://localhost:3000")
   @PostMapping("/getItinerary")
   public ItineraryResponseModel getItinerary(@RequestBody ItineraryFormInputModel request) throws Exception {
-
+    System.out.println(request);
     // for now data source is read from data file
     String city = request.getCity().toLowerCase().replace(' ', '-'); // get city in correct format
-    String dataSource = String.format("src/main/resources/data/%s.json", city);
+    String dataSource = String.format("backend/src/main/resources/data/%s.json", city);
 
     // get scores for each location in "database" according to interests of user
     HashSet<String> pref = new HashSet<>(request.getInterests());

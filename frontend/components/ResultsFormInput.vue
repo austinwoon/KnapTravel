@@ -91,7 +91,7 @@
                 form: {
                     city: "",
                     lengthOfStay: 1,
-                    timeConstraint: 0,
+                    timeConstraint: 1,
                     tags: [],
                     selectedTags: [],
                 }
@@ -155,5 +155,6 @@
 <style scoped>
   .form-card {
     width: 900px;
+    max-height: 100%;
   }
 </style>

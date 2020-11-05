@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="container searchBar background-img">
-      <a-row type="flex" align="middle" justify="center">
+    <div class="container">
+      <a-row class="searchBar background-img" type="flex" align="middle" justify="center">
         <ResultsFormInput homePage/>
       </a-row>
     </div>
@@ -9,12 +9,15 @@
     <a-row style="margin-top: 16px">
       
       <a-row type="flex" justify="center" align="middle">
-        <h1 style="letter-spacing: 8px">EXPLORE  ITINERARIES</h1>
+        <a-divider>
+          <span style="font-size: 30px; letter-spacing: 8px">EXPLORE  ITINERARIES</span>
+        </a-divider>
+        
       </a-row>
       
       <a-row class="container" type="flex" :gutter="[24, 24]">
-        <a-col v-for="data in presetData">
-          <div @click="handleClickImageCard(e, data)">
+        <a-col v-for="data in presetData" :key="data.title">
+          <div @click="handleClickImageCard(data)">
             <NuxtLink to="/results">
               <itinerary-image-card
                   :cover-img="data.imgSrc"
@@ -100,7 +103,7 @@
                 form: {
                     city: "",
                     lengthOfStay: 1,
-                    timeConstraint: 0,
+                    timeConstraint: 1,
                     tags: [],
                     selectedTags: [],
                 }
@@ -116,7 +119,7 @@
             }
         },
         methods: {
-            async handleClickImageCard(e, data) {
+            async handleClickImageCard(data) {
                 this.$store.commit('form/updateState', data.formData);
             },
             async handleSelectCity() {
@@ -146,7 +149,7 @@
 
 <style>
   .container {
-    justify-content: space-evenly;
+    justify-content: center;
     display: flex;
   }
   
@@ -158,7 +161,7 @@
   }
   
   .searchBar {
-    height: 35vh;
+    height: 50vh;
     width: 100%;
   }
 </style>

@@ -1,10 +1,8 @@
 <template>
   <a-menu mode="horizontal" theme="dark">
-    <a-menu-item>
-      <NuxtLink to="/">
-        <span style="font-weight: bolder; font-size: 20px; color: aqua">KNAPTRAVEL</span>
-      </NuxtLink>
-    </a-menu-item>
+    <NuxtLink to="/">
+      <span style="margin: 0 16px 0 16px; font-weight: bolder; font-size: 20px; color: aqua">KNAPTRAVEL</span>
+    </NuxtLink>
     
     <a-menu-item>
       <NuxtLink to="/">

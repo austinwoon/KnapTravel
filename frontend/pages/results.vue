@@ -17,7 +17,11 @@
           align="middle"
           justify="center"
       >
-        <h1>Your Itinerary</h1>
+        <a-divider>
+          <span style="font-size: 30px">
+            Your Itinerary FOR {{ this.formData.lengthOfStay }} DAYS IN  {{ this.formData.city }}
+          </span>
+        </a-divider>
       </a-row>
       
       <a-row
@@ -116,6 +120,11 @@
   .daily-itinerary-container {
     display: flex;
     overflow: auto;
+  }
+  
+  .daily-itinerary-container::before, .daily-itinerary-container::after {
+    margin: auto;
+    content: '';
   }
 
 </style>
