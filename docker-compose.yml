@@ -1,13 +1,13 @@
 version: "3.8"
 services:
-#  frontend:
-#    build: ./frontend
-#    ports:
-#      - "3000:3000"
-#    image: node:current-alpine3.12
-#    environment:
-#      hostname: 0.0.0.0
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    image: node:current-alpine3.12
+    environment:
+      hostname: 0.0.0.0
   backend:
-    image: cs201-backend-docker:latest
+    image: cs201-backend-docker:latest 
     ports:
       - "8080:8080"
