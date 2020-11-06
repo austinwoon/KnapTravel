@@ -1,13 +1,13 @@
 version: "3.8"
 services:
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    image: node:current-alpine3.12
-    command: yarn install && yarn run dev
+#  frontend:
+#    build: ./frontend
+#    ports:
+#      - "3000:3000"
+#    image: node:current-alpine3.12
+#    environment:
+#      hostname: 0.0.0.0
   backend:
-    image: maven:3.6-jdk-11-slim
-    command: mvn install && mvn spring-boot:run
+    image: cs201-backend-docker:latest
     ports:
       - "8080:8080"

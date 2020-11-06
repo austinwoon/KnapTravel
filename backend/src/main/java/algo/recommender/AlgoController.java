@@ -21,7 +21,7 @@ import java.util.Map;
 @RestController
 public class AlgoController {
 
-  @CrossOrigin(origins = "http://localhost:3000")
+  @CrossOrigin
   @GetMapping("/getTags/{city}")
   public TagsResponseModel getTags(@PathVariable String city) {
     String cityFormatted = city.toLowerCase().replace(' ', '-'); // get city in correct format
@@ -35,13 +35,13 @@ public class AlgoController {
     return new TagsResponseModel(tags);
   }
 
-  @CrossOrigin(origins = "http://localhost:3000")
+  @CrossOrigin
   @GetMapping("/getCities")
   public CitiesResponseModel getTags() {
     return new CitiesResponseModel();
   }
 
-  @CrossOrigin(origins = "http://localhost:3000")
+  @CrossOrigin
   @PostMapping("/getItinerary")
   public ItineraryResponseModel getItinerary(@RequestBody ItineraryFormInputModel request) throws Exception {
     System.out.println(request);
