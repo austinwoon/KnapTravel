@@ -16,5 +16,7 @@
     "nuxt": "^2.14.6",
     "vue-json-csv": "^1.2.11"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@nuxt/types": "~2.14.0"
+  }
 }

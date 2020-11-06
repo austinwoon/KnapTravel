@@ -19,6 +19,7 @@ export default {
         MAPBOX_API_KEY: process.env.MAPBOX_API_KEY,
         UNSPLASH_ACCESS_KEY: process.env.UNSPLASH_ACCESS_KEY,
         UNSPLASH_SECRET_KEY: process.env.UNSPLASH_SECRET_KEY,
+        BACKEND_URL: process.env.BACKEND_URL
     },
 
     // Global CSS (https://go.nuxtjs.dev/config-css)

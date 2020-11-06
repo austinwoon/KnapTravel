@@ -80,7 +80,7 @@
 </template>
 
 <script>
-    import {BACKEND_URL} from "../assets/constants";
+    import { BACKEND_URL } from "./Constants";
 
     export default {
         name: "ResultsFormInput",

@@ -61,7 +61,7 @@
 </template>
 
 <script>
-    import {BACKEND_URL} from "../assets/constants";
+    import { BACKEND_URL } from "../components/Constants";
     import ItineraryCard from "../components/ItineraryCard";
     import MapPlot from "../components/MapPlot";
     import ResultsFormInput from "../components/ResultsFormInput";

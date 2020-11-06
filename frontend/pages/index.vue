@@ -39,7 +39,7 @@
 </template>
 
 <script>
-    import {BACKEND_URL} from "../assets/constants";
+    import { BACKEND_URL } from "../components/Constants";
     import ItineraryImageCard from "../components/ItineraryImageCard";
     import ResultsFormInput from "../components/ResultsFormInput";
 
