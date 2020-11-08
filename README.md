@@ -24,7 +24,7 @@ Change to the `/backend` folder and run the following commands. The backend will
 
 1. `./mvnw install` or `.\mvnw install` on Windows.
 
-2. `./mvnw spring-boot:run` or `.\mvnw install` on Windows
+2. `./mvnw spring-boot:run` or `.\mvnw spring-boot:run` on Windows
 
 2) For the Nuxt.js frontend:
 
