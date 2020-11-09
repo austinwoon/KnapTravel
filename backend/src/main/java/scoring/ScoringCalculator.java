@@ -33,6 +33,7 @@ public class ScoringCalculator {
      * Generate static locations attribute from given preferences and filePath inputs
      */
     private void generateLocationsWithScores() {
+        System.out.println(getClass().getResource(filePath));
         String resource = getClass().getResource(filePath).getFile();
         JsonReader jr = new JsonReader(resource);
         List<JSONObject> data = jr.getContents();
