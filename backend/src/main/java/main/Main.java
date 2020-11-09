@@ -6,7 +6,9 @@ import kmeans.Kmeans;
 import location_selector.GreedyLocationSelector;
 import location_selector.KnapsackLocationSelector;
 import location_selector.LocationSelector;
+import routing.PermutationsRouter;
 import routing.GreedyRouter;
+import routing.TwoOptRouter;
 import scoring.ScoringCalculator;
 
 import java.util.HashMap;
@@ -24,7 +26,7 @@ public class Main {
         List<Location> locations = scorer.getLocations();
         Map<Integer, List<Location>> clusters = Kmeans.fit(locations, 5, 100000);
 
-        getClusterRoutes(getKnapsackLocation(clusters, 9), scorer.getCenter());
+        getClusterRoutes(getKnapsackLocation(clusters, 12), scorer.getCenter());
 //        LocationSelector knapper = new KnapsackLocationSelector(clusters.get(2), 9);
 ////        LocationSelector greedy = new GreedyLocationSelector(clusters.get(2), 9);
 
@@ -37,18 +39,27 @@ public class Main {
         for (Integer i : knappedClusters.keySet()) {
             List<Location> topClusterLocations = knappedClusters.get(i);
             System.out.println("for cluster " + i + ": ");
-            System.out.println("before routing: ");
-            for (Location loc : topClusterLocations) {
-                System.out.println(loc.getName());
-            }
-            System.out.println("-------------------");
-            System.out.println("after routing: ");
-            GreedyRouter router = new GreedyRouter(startPoint, topClusterLocations);
-            List<Location> routedLocations = router.getRoute();
-            for (Location loc : routedLocations) {
-                System.out.println(loc.getName());
-            }
+
+            long startTime = System.nanoTime();
+            GreedyRouter greedyRouter = new GreedyRouter(startPoint, topClusterLocations);
+            System.out.println("greedy distance: " + greedyRouter.getTotalDist());
+            long endTime = System.nanoTime();
+            System.out.println("Time elapse for GREEDY: " + (endTime-startTime)+ " ms");
+
+            startTime = System.nanoTime();
+            TwoOptRouter twoOptRouter = new TwoOptRouter(startPoint, topClusterLocations);
+            System.out.println("2-opt distance: " +twoOptRouter.getTotalDist());
+            endTime = System.nanoTime();
+            System.out.println("Time elapse for 2-opt: " + (endTime-startTime)+ " ms");
+
+            startTime = System.nanoTime();
+            PermutationsRouter perRouter = new PermutationsRouter(startPoint, topClusterLocations);
+            System.out.println("permu distance: " +perRouter.getTotalDist());
+            endTime = System.nanoTime();
+            System.out.println("Time elapse for all permu: " + (endTime-startTime) + " ms");
+
             System.out.println("##################");
+            List<Location> routedLocations = greedyRouter.getRoute();
             routedClusters.put(i, routedLocations);
         }
         return routedClusters;
