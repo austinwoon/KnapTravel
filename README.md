@@ -12,7 +12,7 @@ The travel recommender application allows a user to auto-generate a suitable set
 
 ### Standalone Algorithm Setup ###
 
-TODO
+Run the Main.java file in the `main` package. To change the country, please modify the country name in the string parameter passed to ScoringCalculator.
 
 **Prerequisites for full-stack: Yarn and a working JDK (version 11+). A Mapbox API key will have to be provided via Yarn. See Configuration for more details.**
 
@@ -36,11 +36,13 @@ Change to the `/frontend` folder and run the following commands. The frontend wi
 
 ### Docker deployment instructions (Requires docker and docker-compose to be installed) ###
 
-1) Change to the `/backend` folder and run the following command:
-`./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=cs201-backend-docker:latest`
+1. Change to the `/backend` folder and run the following command:   
+`./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=cs201-backend-docker:latest`   
 or `.\mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=cs201-backend-docker:latest` if on Windows.
-2) Return to project directory root and run `docker-compose up -d`.
-3) Run `docker build` if changes are made to the frontend, or redo Step 1 if changes are made to the backend.
+
+2. Return to project directory root and run `docker-compose up -d`.
+
+3. Run `docker build` if changes are made to the frontend, or redo Step 1 if changes are made to the backend.
 
 ### Configuration ###
 
