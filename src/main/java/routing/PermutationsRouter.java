@@ -6,40 +6,46 @@ import entities.Location;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GreedyRouter {
+public class PermutationsRouter {
   public final static double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
 
   private List<Location> route;
-  private int totalDist = 0;
+  int nearestDist = Integer.MAX_VALUE;
   private final Coordinate STARTING_POINT;
+  int counter = 0;
 
-  public GreedyRouter (Coordinate startingPoint, List<Location> clusterLocations) {
+  public PermutationsRouter(Coordinate startingPoint, List<Location> clusterLocations) {
     this.STARTING_POINT = startingPoint;
-    route = new ArrayList<>();
-    Coordinate start = startingPoint;
     List<Location> temp = new ArrayList<>(clusterLocations);
-
-    Location nearest = null;
-    while (route.size() < clusterLocations.size()) {
-      int nearestDist = Integer.MAX_VALUE;
-      nearest = null;
-      for (Location location : temp) {
-        int dist = calculateDistanceInKilometer(start, location.getCoordinate());
-        if (dist < nearestDist) {
-          nearest = location;
-          nearestDist = dist;
-        }
-      }
-      route.add(nearest);
-      start = nearest.getCoordinate();
-      temp.remove(nearest);
-      totalDist += nearestDist;
-    }
-
-    totalDist += calculateDistanceInKilometer(nearest.getCoordinate(), startingPoint);
+    heapPermutation(temp, clusterLocations.size(), clusterLocations.size());
   }
 
-  public int getTotalDist() { return calDist(route); }
+  private void heapPermutation(List<Location> tempList, int size, int n) {
+    List<Location> clusterLocations = new ArrayList<>(tempList);
+      if (size == 1) {
+        int dist = calDist(clusterLocations);
+        counter ++;
+        if (dist < nearestDist) {
+          route = clusterLocations;
+          nearestDist = dist;
+        }
+        return;
+    }
+
+    for (int i = 0; i < size; i++) {
+      heapPermutation(clusterLocations, size - 1, n);
+
+      if (i % 2 == 1) {
+        Location temp = clusterLocations.get(0);
+        clusterLocations.set(0, clusterLocations.get(size - 1));
+        clusterLocations.set(size - 1, temp);
+      } else {
+        Location temp = clusterLocations.get(i);
+        clusterLocations.set(i, clusterLocations.get(size - 1));
+        clusterLocations.set(size - 1, temp);
+      }
+    }
+  }
 
   private int calDist (List<Location> clusterLocations) {
     int results = calculateDistanceInKilometer(STARTING_POINT, clusterLocations.get(0).getCoordinate());
@@ -52,6 +58,10 @@ public class GreedyRouter {
 
   public List<Location> getRoute() {
     return route;
+  }
+
+  public int getTotalDist () {
+    return nearestDist;
   }
 
   public int calculateDistanceInKilometer(Coordinate start, Coordinate destination) {
@@ -69,5 +79,4 @@ public class GreedyRouter {
 
     return (int) (Math.round(AVERAGE_RADIUS_OF_EARTH_KM * c));
   }
-
 }

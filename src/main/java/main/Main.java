@@ -6,6 +6,7 @@ import kmeans.Kmeans;
 import location_selector.GreedyLocationSelector;
 import location_selector.KnapsackLocationSelector;
 import location_selector.LocationSelector;
+import routing.PermutationsRouter;
 import routing.GreedyRouter;
 import scoring.ScoringCalculator;
 
@@ -42,12 +43,21 @@ public class Main {
                 System.out.println(loc.getName());
             }
             System.out.println("-------------------");
-            System.out.println("after routing: ");
-            GreedyRouter router = new GreedyRouter(startPoint, topClusterLocations);
-            List<Location> routedLocations = router.getRoute();
+            System.out.println("after greedy routing: ");
+            GreedyRouter greedyRouter = new GreedyRouter(startPoint, topClusterLocations);
+            List<Location> routedLocations = greedyRouter.getRoute();
             for (Location loc : routedLocations) {
                 System.out.println(loc.getName());
             }
+            System.out.println(greedyRouter.getTotalDist());
+            System.out.println("-------------------");
+            System.out.println("after best routing: ");
+            PermutationsRouter bestRouter = new PermutationsRouter(startPoint, topClusterLocations);
+            List<Location> bestRoute = bestRouter.getRoute();
+            for (Location loc : bestRoute) {
+                System.out.println(loc.getName());
+            }
+            System.out.println(bestRouter.getTotalDist());
             System.out.println("##################");
             routedClusters.put(i, routedLocations);
         }
