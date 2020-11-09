@@ -25,22 +25,6 @@
             }
         },
         methods: {
-            styleMap(feature){
-                const year = feature.properties.datelisted
-                    ? parseInt(feature.properties.datelisted.slice(0, 4))
-                    : 0;
-                const color = year > 2000 ? "red" : "blue";
-                return { color: color };
-            },
-
-            onEachFeature(feature, layer) {
-                if (feature.properties && feature.properties.name) {
-                    layer.bindPopup(feature.properties.name);
-                    layer.on('mouseover', () => { layer.openPopup(); });
-                    layer.on('mouseout', () => { layer.closePopup(); });
-                }
-            },
-            
             setupLeafletMap() {
                 const mapDiv = L.map(this.mapContainerId, {center: this.center, zoom: 12});
                 L.tileLayer(
@@ -53,12 +37,33 @@
                         accessToken: process.env.MAPBOX_API_KEY
                     }
                 ).addTo(mapDiv);
+                
+                const coordinates = this.plotPoints.map(point => point.coordinates);
+                
+                
+                L.polyline(coordinates, {
+                    color: 'blue'
+                }).addTo(mapDiv);
+                
 
-                this.plotPoints.forEach(point => {
-                    L.marker(point.coordinates, {
-                        title: point.title,
-                        riseOnHover: true,
-                    }).addTo(mapDiv);
+                this.plotPoints.forEach((point, i) => {
+                    const options = {
+                        opacity: 1.0
+                    };
+                    
+                    if (i === 0 ) {
+                        options.icon = L.icon({iconUrl: '/start.svg', iconSize: [36, 36]})
+                    }
+                    
+                    if (i === this.plotPoints.length - 1) {
+                        options.icon = L.icon({iconUrl: '/flag.svg', iconSize: [36, 36]})
+                    }
+                    
+                    L.marker(point.coordinates, options
+                    ).bindTooltip(point.name, {
+                        direction: 'top',
+                        permanent: true,
+                        offset: [-15, -10]}).addTo(mapDiv)
                 })
             }
         },

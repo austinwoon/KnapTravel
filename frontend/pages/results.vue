@@ -1,59 +1,134 @@
 <template>
-  <div>
+  <a-row class="background">
     
-    <ItineraryCard
-        v-for="(dailyItinerary, i) in results"
-        :key="i+'itineraryCard'"
-        :dailyItinerary="dailyItinerary"
-        :title="`Day ${i + 1} Schedule`"
-    />
+    <a-row type="flex" align="middle" justify="center">
+      <ResultsFormInput
+          style="margin-top: 24px"
+          v-on:generateItinerary="generateItinerary"
+      />
+    </a-row>
+    
+    <a-row
+        style="margin-top: 24px; letter-spacing: 5px; text-transform: uppercase"
+    
+    >
+      <a-row
+          type="flex"
+          align="middle"
+          justify="center"
+      >
+        <a-divider>
+          <span style="font-size: 30px">
+            Your Itinerary FOR {{ this.formData.lengthOfStay }} DAYS IN  {{ this.formData.city }}
+          </span>
+        </a-divider>
+      </a-row>
+      
+      <a-row
+          type="flex"
+          align="middle"
+          justify="center"
+      >
+        <span>Horizontal Scroll to View  More</span>
+        <a-icon type="arrow-right"/>
+      </a-row>
+    </a-row>
+    
+    <div v-if="!formData.city">
+      <a-row type="flex" justify="center" align="middle">
+        <h1> PLEASE SELECT A CITY </h1>
+      </a-row>
+    </div>
+    
+    <div v-else>
+      <a-spin :spinning="loading" size="large" tip="Loading">
+        <a-row class="daily-itinerary-container">
+          <a-col
+              style="margin: 24px 24px 24px 24px; min-width: 800px"
+              v-for="(dailyItinerary, i) in results"
+              :key="key + '' + i"
+          >
+            <ItineraryCard
+                :dailyItinerary="dailyItinerary"
+                :title="`Day ${i + 1} Schedule`"
+            />
+          </a-col>
+        </a-row>
+      </a-spin>
+    </div>
   
-  </div>
+  </a-row>
 </template>
 
 <script>
-    import {BACKEND_URL} from "../assets/constants";
+    import { BACKEND_URL } from "../components/Constants";
     import ItineraryCard from "../components/ItineraryCard";
     import MapPlot from "../components/MapPlot";
+    import ResultsFormInput from "../components/ResultsFormInput";
 
     export default {
-        components: {MapPlot, ItineraryCard},
+        components: {ResultsFormInput, MapPlot, ItineraryCard},
         data() {
             return {
-                results: []
+                results: [],
+                loading: false,
             }
         },
         name: "results",
         computed: {
             formData() {
                 return this.$store.state.form;
+            },
+            key() {
+                const {lengthOfStay, timeConstraint, city} = this.$store.state.form;
+                return city + lengthOfStay + timeConstraint;
+            }
+        },
+        methods: {
+            async generateItinerary() {
+                this.loading = true;
+                const URL = `${BACKEND_URL}/getItinerary`;
+                //TODO (AUSTIN): Remove this dummy data
+                const requestBody = this.formData.city ? this.formData : {
+                    lengthOfStay: 3,
+                    timeConstraint: 8,
+                    selectedTags: ["Museum"],
+                    city: "Tokyo",
+                };
+
+                const {lengthOfStay: days, timeConstraint, selectedTags: interests, city} = requestBody;
+                this.$axios.$post(URL, {
+                    days,
+                    timeConstraint,
+                    interests,
+                    city,
+                }).then(({data}) => {
+                    this.results = data;
+                    this.loading = false;
+                }).catch(e => {
+                    console.log(e);
+                })
             }
         },
         mounted() {
-            const URL = `${BACKEND_URL}/getItinerary`;
-            //TODO (AUSTIN): Remove this dummy data
-            const requestBody = this.formData.city ? this.formData : {
-                lengthOfStay: 3,
-                timeConstraint: 8,
-                selectedTags: ["Museum"],
-                city: "Tokyo",
-            };
-
-            const {lengthOfStay: days, timeConstraint, selectedTags: interests, city} = requestBody;
-            this.$axios.$post(URL, {
-                days,
-                timeConstraint,
-                interests,
-                city,
-            }).then(({data}) => {
-                this.results = data;
-            }).catch(e => {
-                console.log(e);
-            })
+            this.generateItinerary();
         }
     }
 </script>
 
 <style scoped>
+  .daily-itinerary-container {
+    display: flex;
+    overflow: auto;
+  }
+  
+  .daily-itinerary-container::before, .daily-itinerary-container::after {
+    margin: auto;
+    content: '';
+  }
+  
+  .background {
+    background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+  }
 
 </style>
