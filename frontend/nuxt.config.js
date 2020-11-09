@@ -17,6 +17,9 @@ export default {
 
     env: {
         MAPBOX_API_KEY: process.env.MAPBOX_API_KEY,
+        UNSPLASH_ACCESS_KEY: process.env.UNSPLASH_ACCESS_KEY,
+        UNSPLASH_SECRET_KEY: process.env.UNSPLASH_SECRET_KEY,
+        BACKEND_URL: process.env.BACKEND_URL
     },
 
     // Global CSS (https://go.nuxtjs.dev/config-css)
@@ -26,7 +29,7 @@ export default {
 
     // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
     plugins: [
-        '@/plugins/antd-ui'
+        '@/plugins/antd-ui',
     ],
 
     // Auto import components (https://go.nuxtjs.dev/config-components)
