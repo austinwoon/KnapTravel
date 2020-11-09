@@ -21,12 +21,12 @@ public class Main {
 
         HashSet<String> pref = new HashSet<>();
         pref.add("Museums");
-        ScoringCalculator scorer = new ScoringCalculator(pref, "src/main/resources/data/tokyo.json");
+        ScoringCalculator scorer = new ScoringCalculator(pref, "/data/tokyo.json");
 
         List<Location> locations = scorer.getLocations();
         Map<Integer, List<Location>> clusters = Kmeans.fit(locations, 5, 100000);
 
-        getClusterRoutes(getKnapsackLocation(clusters, 12), scorer.getCenter());
+        getClusterRoutes(getKnapsackLocation(clusters, 8), scorer.getCenter());
 //        LocationSelector knapper = new KnapsackLocationSelector(clusters.get(2), 9);
 ////        LocationSelector greedy = new GreedyLocationSelector(clusters.get(2), 9);
 
