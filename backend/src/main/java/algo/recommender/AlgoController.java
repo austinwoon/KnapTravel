@@ -7,7 +7,7 @@ import algo.models.TagsResponseModel;
 import entities.Coordinate;
 import entities.Location;
 import kmeans.Kmeans;
-import location_selector.KnapsackLocationSelector;
+import location_selector.RevisedKnapsackLocationSelector;
 import location_selector.LocationSelector;
 import org.springframework.web.bind.annotation.*;
 import routing.GreedyRouter;
@@ -60,7 +60,7 @@ public class AlgoController {
     Map<Integer, List<Location>> clusters = Kmeans.fit(locations, request.getDays(), 100000);
 
     // select locations within cluster
-    Map<Integer, List<Location>> selectedLocations = getKnapsackLocation(clusters, request.getTimeConstraint());
+    Map<Integer, List<Location>> selectedLocations = getKnapsackLocation(clusters, request.getTimeConstraint(), scorer.getCenter());
 
     // select ordering of locations to visit within cluster
 
@@ -69,10 +69,11 @@ public class AlgoController {
     return new ItineraryResponseModel(itinerary);
   }
 
-  public static Map<Integer, List<Location>> getKnapsackLocation(Map<Integer, List<Location>> clusters, int timeConstraint) {
+  public static Map<Integer, List<Location>> getKnapsackLocation(Map<Integer, List<Location>> clusters, int timeConstraint,
+                                                                 Coordinate center) {
     Map<Integer, List<Location>> selectedLocations = new HashMap<>();
     for (Integer i : clusters.keySet()) {
-      LocationSelector selector = new KnapsackLocationSelector(clusters.get(i), timeConstraint);
+      LocationSelector selector = new RevisedKnapsackLocationSelector(clusters.get(i), timeConstraint, center);
       selectedLocations.put(i, selector.selectLocationsToVisit());
     }
     return selectedLocations;
