@@ -53,11 +53,11 @@ public class Main {
             endTime = System.nanoTime();
             System.out.println("Time elapse for 2-opt: " + (endTime-startTime)+ " ms");
 
-            startTime = System.nanoTime();
-            PermutationsRouter perRouter = new PermutationsRouter(startPoint, topClusterLocations);
-            System.out.println("permu distance: " +perRouter.getTotalDist());
-            endTime = System.nanoTime();
-            System.out.println("Time elapse for all permu: " + (endTime-startTime) + " ms");
+//            startTime = System.nanoTime();
+//            PermutationsRouter perRouter = new PermutationsRouter(startPoint, topClusterLocations);
+//            System.out.println("permu distance: " +perRouter.getTotalDist());
+//            endTime = System.nanoTime();
+//            System.out.println("Time elapse for all permu: " + (endTime-startTime) + " ms");
 
             System.out.println("##################");
             List<Location> routedLocations = greedyRouter.getRoute();

@@ -24,7 +24,7 @@ public class RevisedKnapsackLocationSelector implements LocationSelector {
     int distanceFromHotel = calculateDistanceInKilometer(center, startingPoint);
     int speedOnCar = 90; // 90km/hr
     int timeTakenToCluster = (int) Math.ceil(distanceFromHotel / speedOnCar);
-    this.timeConstraint = (timeConstraint - timeTakenToCluster) * 2;
+    this.timeConstraint = (timeConstraint - timeTakenToCluster - timeTakenToCluster) * 2;
   }
 
   private Coordinate getClusterCentre (List<Location> locations) {
