@@ -12,7 +12,7 @@ The travel recommender application allows a user to auto-generate a suitable set
 
 ### Standalone Algorithm Setup ###
 
-Run the Main.java file in the `main` package. 
+Change to the `/backend` folder and run `./run_main.sh` on Mac/Linux or `.\run_main.cmd` on Windows.
 
 To change the country, days to visit country and maximum visiting hours, please modify the inputs 
 `city`, `preferences`, `daysToVisit` and `timeConstraint`.

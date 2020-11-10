@@ -156,5 +156,6 @@
   .form-card {
     width: 900px;
     max-height: 100%;
+    z-index: 999;
   }
 </style>

@@ -211,6 +211,7 @@
   
   .secondary-background {
     /*background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);*/
+    margin-top: 4%;
     padding: 8px 0 24px 0;
     min-height: 50vh;
     height: 100%;
