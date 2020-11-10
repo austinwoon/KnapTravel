@@ -18,87 +18,72 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
+        String[] cities = { "tokyo", "new-york-city", "taipei", "paris", "california", "osaka" };
+        int daysToVisit = 4;
+        int timeConstraint = 8;
 
+        for (String city : cities ) {
+            System.out.println("======================================NEW CITY===================================================");
+            System.out.println(String.format("Generating Itinerary for %s, Visiting %s Days, with %s visiting hours", city, daysToVisit, timeConstraint));
+            generateItinerary(city, daysToVisit, timeConstraint);
+            System.out.println("=======================================END OF CITY==============================================\n");
+        }
+    }
+
+    public static void generateItinerary(String city, int days, int timeConstraint) {
         HashSet<String> pref = new HashSet<>();
         pref.add("Museums");
-        ScoringCalculator scorer = new ScoringCalculator(pref, "/data/tokyo.json");
-        Coordinate center = scorer.getCenter();
 
+        String dataSource = String.format("/data/%s.json", city);
+
+        // get scores for each location in "database" according to interests of user
+        ScoringCalculator scorer = new ScoringCalculator(pref, dataSource);
+
+        // get list of locations with scores
         List<Location> locations = scorer.getLocations();
-        Map<Integer, List<Location>> clusters = Kmeans.fit(locations, 5, 100000);
 
-        getClusterRoutes(getKnapsackLocation(clusters, 10, scorer.getCenter()), scorer.getCenter());
-//        LocationSelector knapper = new KnapsackLocationSelector(clusters.get(2), 9);
-////        LocationSelector greedy = new GreedyLocationSelector(clusters.get(2), 9);
+        // get clusters according to number of days to visit
+        Map<Integer, List<Location>> clusters = Kmeans.fit(locations, days, 100000);
 
-//        System.out.println(getGreedyLocation(clusters, 9));
-//        System.out.println(getKnapsackLocation(clusters, 9));
+        // select locations within cluster
+        Map<Integer, List<Location>> selectedLocations = getKnapsackLocation(clusters, timeConstraint, scorer.getCenter());
+
+        // select ordering of locations to visit within cluster
+        Map<Integer, List<Location>> itinerary = getClusterRoutes(selectedLocations, scorer.getCenter());
+        printItinerary(itinerary);
     }
 
-    public static Map<Integer, List<Location>> getClusterRoutes(Map<Integer, List<Location>> knappedClusters, Coordinate startPoint) {
-        Map<Integer, List<Location>> routedClusters = new HashMap<>();
-        for (Integer i : knappedClusters.keySet()) {
-            List<Location> topClusterLocations = knappedClusters.get(i);
-            System.out.println("for cluster " + i + ": ");
-
-            long startTime = System.nanoTime();
-            GreedyRouter greedyRouter = new GreedyRouter(startPoint, topClusterLocations);
-            System.out.println("greedy distance: " + greedyRouter.getTotalDist());
-            long endTime = System.nanoTime();
-            System.out.println("Time elapse for GREEDY: " + (endTime-startTime)+ " ms");
-
-            startTime = System.nanoTime();
-            TwoOptRouter twoOptRouter = new TwoOptRouter(startPoint, topClusterLocations);
-            System.out.println("2-opt distance: " +twoOptRouter.getTotalDist());
-            endTime = System.nanoTime();
-            System.out.println("Time elapse for 2-opt: " + (endTime-startTime)+ " ms");
-
-//            startTime = System.nanoTime();
-//            PermutationsRouter perRouter = new PermutationsRouter(startPoint, topClusterLocations);
-//            System.out.println("permu distance: " +perRouter.getTotalDist());
-//            endTime = System.nanoTime();
-//            System.out.println("Time elapse for all permu: " + (endTime-startTime) + " ms");
-
-            System.out.println("##################");
-            List<Location> routedLocations = greedyRouter.getRoute();
-            routedClusters.put(i, routedLocations);
+    public static void printItinerary(Map<Integer, List<Location>> itinerary) {
+        int i = 0;
+        for (List<Location> locations : itinerary.values()) {
+            System.out.println(String.format("Day %s itinerary: ", ++i));
+            for (int j = 0; j < locations.size(); j++) {
+                String name = locations.get(j).getName();
+                System.out.println(String.format("Visit Sequence %s: %s", j + 1, name));
+            }
         }
-        return routedClusters;
-    }
-
-    public static Map<Integer, List<Location>> getGreedyLocation(Map<Integer, List<Location>> clusters, int timeConstraint) {
-        Map<Integer, List<Location>> selectedLocations = new HashMap<>();
-        double score = 0.0;
-        for (Integer i : clusters.keySet()) {
-            LocationSelector selector = new GreedyLocationSelector(clusters.get(i), timeConstraint);
-            selectedLocations.put(i, selector.selectLocationsToVisit());
-            score += getTotalScore(selector.selectLocationsToVisit());
-        }
-
-        System.out.println(String.format("TOTAL GREEDY SCORE : %.2f", score));
-        return selectedLocations;
     }
 
     public static Map<Integer, List<Location>> getKnapsackLocation(Map<Integer, List<Location>> clusters, int timeConstraint,
                                                                    Coordinate center) {
         Map<Integer, List<Location>> selectedLocations = new HashMap<>();
-        double score = 0.0;
         for (Integer i : clusters.keySet()) {
             LocationSelector selector = new RevisedKnapsackLocationSelector(clusters.get(i), timeConstraint, center);
             selectedLocations.put(i, selector.selectLocationsToVisit());
-            score += getTotalScore(selector.selectLocationsToVisit());
         }
-        System.out.println(String.format("TOTAL KNAP SCORE : %.2f", score));
         return selectedLocations;
     }
 
-    public static double getTotalScore(List<Location> locations) {
-        double score = 0;
-        for (Location l : locations) {
-            score += l.getScore();
+    public static Map<Integer, List<Location>> getClusterRoutes(Map<Integer, List<Location>> selectedLocations, Coordinate startPoint) {
+        Map<Integer, List<Location>> routedClusters = new HashMap<>();
+        for (Integer i : selectedLocations.keySet()) {
+            List<Location> topClusterLocations = selectedLocations.get(i);
+            GreedyRouter router = new GreedyRouter(startPoint, topClusterLocations);
+            List<Location> routedLocations = router.getRoute();
+            routedClusters.put(i, routedLocations);
         }
 
-        return score;
+        return routedClusters;
     }
 
 }
