@@ -18,23 +18,34 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        String[] cities = { "tokyo", "new-york-city", "taipei", "paris", "california", "osaka" };
+        String city = "tokyo";
+        HashSet<String> preferences = new HashSet<>();
         // please edit days to visit and time constraint to change inputs accordingly
+        // to all available prefences to add for each city, call viewPreferences(cityName) function
+        // e.g viewPreferences("tokyo");
+        viewPreferences("tokyo");
+        preferences.add("Museums");
         int daysToVisit = 4;
         int timeConstraint = 8;
 
-        for (String city : cities ) {
-            System.out.println("======================================NEW CITY===================================================");
-            System.out.println(String.format("Generating Itinerary for %s, Visiting %s Days, with %s visiting hours", city, daysToVisit, timeConstraint));
-            generateItinerary(city, daysToVisit, timeConstraint);
-            System.out.println("=======================================END OF CITY==============================================\n");
-        }
+        System.out.println("======================================GENERATING ITINERARY===================================================");
+        System.out.println(String.format("Generating Itinerary for %s, Visiting %s Days, with %s visiting hours", city, daysToVisit, timeConstraint));
+        System.out.println(String.format("PREFERENCES STATED: %s", preferences.toString()));
+        generateItinerary(city, daysToVisit, timeConstraint, preferences);
+        System.out.println("=======================================END==============================================\n");
+
     }
 
-    public static void generateItinerary(String city, int days, int timeConstraint) {
+    public static void viewPreferences(String city) {
+        String dataSource = String.format("/data/%s.json", city);
         HashSet<String> pref = new HashSet<>();
-        pref.add("Museums");
 
+        ScoringCalculator scorer = new ScoringCalculator(pref, dataSource);
+        List<String> tags = scorer.getFilteredTags(100);
+        System.out.println(String.format("AVAILABLE TAGS: %s", tags.toString()));
+    }
+
+    public static void generateItinerary(String city, int days, int timeConstraint, HashSet<String> pref) {
         String dataSource = String.format("/data/%s.json", city);
 
         // get scores for each location in "database" according to interests of user
