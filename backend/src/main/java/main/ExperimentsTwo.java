@@ -22,7 +22,7 @@ public class ExperimentsTwo {
         pref.add("Museums");
         String[] cities = {"tokyo", "california", "london", "new-york-city", "osaka", "paris", "taipei" };
 
-        sb.append("city,timeConstraint,knapTimeTaken,heuristicTimeTaken\n");
+        sb.append("city,timeConstraint,knapTimeTaken,heuristicTimeTaken,knapScore,heuristicScore\n");
         for (String city : cities ) {
             currentCity = city;
             System.out.println(String.format("========== CONDUCTING EXPERIMENT FOR CITY %s ===========", city));
@@ -57,14 +57,23 @@ public class ExperimentsTwo {
                 double knapDistance = 0.0;
                 double knapHeuristicDistance = 0.0;
 
+                double totalKnapScore = 0.0;
+                double totalHeursiticScore = 0.0;
+
                 for (int clusterKey : clusters.keySet()) {
                     List<Location> clusterLocations = clusters.get(clusterKey);
 
                     LocationSelector knapSelector = new KnapsackLocationSelector(clusterLocations, timeConstraint);
-                    LocationSelector heuristicSelector = new RevisedKnapsackLocationSelector(clusterLocations, timeConstraint, scorer.getCenter());
 
-                    TwoOptRouter knapRouter = new TwoOptRouter(scorer.getCenter(), knapSelector.selectLocationsToVisit());
-                    TwoOptRouter heuristicRouter = new TwoOptRouter(scorer.getCenter(), heuristicSelector.selectLocationsToVisit());
+                    LocationSelector heuristicSelector = new RevisedKnapsackLocationSelector(clusterLocations, timeConstraint, scorer.getCenter());
+                    List<Location> knapLocations = knapSelector.selectLocationsToVisit();
+                    List<Location> heursticLocations = heuristicSelector.selectLocationsToVisit();
+
+                    totalKnapScore += getTotalScore(knapLocations);
+                    totalHeursiticScore += getTotalScore(heursticLocations);
+
+                    TwoOptRouter knapRouter = new TwoOptRouter(scorer.getCenter(), knapLocations);
+                    TwoOptRouter heuristicRouter = new TwoOptRouter(scorer.getCenter(), heursticLocations);
                     knapDistance += knapRouter.getTotalDist();
                     knapHeuristicDistance += heuristicRouter.getTotalDist();
                 }
@@ -72,9 +81,19 @@ public class ExperimentsTwo {
                 double knapTimeTaken = knapDistance / 75;
                 double heursticTimeTaken = knapHeuristicDistance / 75;
 
-                sb.append(String.format("%s,%s,%.2f,%.2f\n", currentCity, timeConstraint,knapTimeTaken,heursticTimeTaken));
+
+                sb.append(String.format("%s,%s,%.2f,%.2f,%.2f,%.2f\n", currentCity, timeConstraint, knapTimeTaken,heursticTimeTaken, totalKnapScore, totalHeursiticScore));
             }
         }
+    }
+
+    public static double getTotalScore(List<Location> locations) {
+        double score = 0;
+        for (Location l : locations) {
+            score += l.getScore();
+        }
+
+        return score;
     }
 
     public static void writeToCSV(String fileName, StringBuilder linesToAdd) {

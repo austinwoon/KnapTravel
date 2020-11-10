@@ -110,14 +110,14 @@ public class ExperimentOne {
             GreedyRouter greedyRouter = new GreedyRouter(startPoint, topClusterLocations);
             System.out.println("greedy distance: " + greedyRouter.getTotalDist());
             long endTime = System.nanoTime();
-            System.out.println("Time elapse for GREEDY: " + (endTime-startTime)+ " ms");
+            System.out.println("Time elapse for GREEDY: " + (endTime-startTime)+ " ns");
             long greedyTime = endTime-startTime;
 
             startTime = System.nanoTime();
             TwoOptRouter twoOptRouter = new TwoOptRouter(startPoint, topClusterLocations);
             System.out.println("2-opt distance: " +twoOptRouter.getTotalDist());
             endTime = System.nanoTime();
-            System.out.println("Time elapse for 2-opt: " + (endTime-startTime)+ " ms");
+            System.out.println("Time elapse for 2-opt: " + (endTime-startTime)+ " ns");
             long twoOptTime = endTime-startTime;
 
             System.out.println("##################");
