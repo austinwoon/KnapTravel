@@ -19,6 +19,7 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) {
         String[] cities = { "tokyo", "new-york-city", "taipei", "paris", "california", "osaka" };
+        // please edit days to visit and time constraint to change inputs accordingly
         int daysToVisit = 4;
         int timeConstraint = 8;
 
