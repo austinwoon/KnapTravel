@@ -6,6 +6,7 @@ import kmeans.Kmeans;
 import location_selector.GreedyLocationSelector;
 import location_selector.KnapsackLocationSelector;
 import location_selector.LocationSelector;
+import location_selector.RevisedKnapsackLocationSelector;
 import routing.GreedyRouter;
 import routing.PermutationsRouter;
 import routing.TwoOptRouter;
@@ -19,11 +20,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Experiments {
+public class ExperimentOne {
     // containing data to write to experiments.csv file
     private static StringBuilder selectorSb = new StringBuilder();
     private static StringBuilder routeSb = new StringBuilder();
     private static String currentCity = "";
+
 
 
 
@@ -57,7 +59,6 @@ public class Experiments {
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     public static void conductExperiment(HashSet<String> pref, String fileName) {
@@ -97,19 +98,6 @@ public class Experiments {
                 getClusterRoutes(greedyLocations, scorer.getCenter());
             }
         }
-
-
-
-    }
-
-    public static double getTotalScoreOfSelectedLocations(Map<Integer, List<Location>> selectedLocations) {
-        double totalScore = 0;
-        for (List<Location> locations : selectedLocations.values()) {
-            for (Location l : locations) {
-                totalScore += l.getScore();
-            }
-        }
-        return totalScore;
     }
 
     public static Map<Integer, List<Location>> getClusterRoutes(Map<Integer, List<Location>> clusters, Coordinate startPoint) {
