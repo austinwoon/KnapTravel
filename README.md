@@ -12,7 +12,17 @@ The travel recommender application allows a user to auto-generate a suitable set
 
 ### Standalone Algorithm Setup ###
 
-Run the Main.java file in the `main` package. To change the country, please modify the country name in the string parameter passed to ScoringCalculator.
+Run the Main.java file in the `main` package. 
+
+To change the country, days to visit country and maximum visiting hours, please modify the inputs 
+`city`, `preferences`, `daysToVisit` and `timeConstraint`.
+
+#### Variable Definitions
+1. `city`: Name of city you would like to visit, currently available options are `['tokyo', 'new-york-city', 'osaka', 'california', 'taipei', 'paris', 'london'] `
+2. `preferences`: Set of preferences to include. Each preferences will add to score per location. To view available preferences, call `viewPreferences` function in `Main` class
+3. `daysToVisit`: Number of days to visit city, will set cluster number for k-means
+4. `timeConstraint`: Number of visiting hours per day. e.g if you put 8hrs, you have maximum of 8hrs of visiting hours per day.
+
 
 **Prerequisites for full-stack: Yarn and a working JDK (version 11+). A Mapbox API key will have to be provided via Yarn. See Configuration for more details.**
 
