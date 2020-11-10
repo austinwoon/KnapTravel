@@ -35,14 +35,8 @@ public class PermutationsRouter extends Router{
       heapPermutation(clusterLocations, size - 1, n);
 
       if (i % 2 == 1) {
-//        Location temp = clusterLocations.get(0);
-//        clusterLocations.set(0, clusterLocations.get(size - 1));
-//        clusterLocations.set(size - 1, temp);
         Collections.swap(clusterLocations, 0, size - 1);
       } else {
-//        Location temp = clusterLocations.get(i);
-//        clusterLocations.set(i, clusterLocations.get(size - 1));
-//        clusterLocations.set(size - 1, temp);
         Collections.swap(clusterLocations, i, size - 1);
       }
     }
