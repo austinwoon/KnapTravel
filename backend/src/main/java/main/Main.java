@@ -42,7 +42,7 @@ public class Main {
 
         ScoringCalculator scorer = new ScoringCalculator(pref, dataSource);
         List<String> tags = scorer.getFilteredTags(100);
-        System.out.println(String.format("AVAILABLE TAGS: %s", tags.toString()));
+        System.out.println(String.format("AVAILABLE TAGS FOR CITY %s : %s",city, tags.toString()));
     }
 
     public static void generateItinerary(String city, int days, int timeConstraint, HashSet<String> pref) {
