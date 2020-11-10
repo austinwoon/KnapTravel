@@ -4,7 +4,7 @@ import entities.Coordinate;
 import entities.Location;
 import kmeans.Kmeans;
 import location_selector.GreedyLocationSelector;
-import location_selector.KnapsackLocationSelector;
+import location_selector.RevisedKnapsackLocationSelector;
 import location_selector.LocationSelector;
 import routing.PermutationsRouter;
 import routing.GreedyRouter;
@@ -22,11 +22,12 @@ public class Main {
         HashSet<String> pref = new HashSet<>();
         pref.add("Museums");
         ScoringCalculator scorer = new ScoringCalculator(pref, "/data/tokyo.json");
+        Coordinate center = scorer.getCenter();
 
         List<Location> locations = scorer.getLocations();
         Map<Integer, List<Location>> clusters = Kmeans.fit(locations, 5, 100000);
 
-        getClusterRoutes(getKnapsackLocation(clusters, 8), scorer.getCenter());
+        getClusterRoutes(getKnapsackLocation(clusters, 10, scorer.getCenter()), scorer.getCenter());
 //        LocationSelector knapper = new KnapsackLocationSelector(clusters.get(2), 9);
 ////        LocationSelector greedy = new GreedyLocationSelector(clusters.get(2), 9);
 
@@ -78,11 +79,12 @@ public class Main {
         return selectedLocations;
     }
 
-    public static Map<Integer, List<Location>> getKnapsackLocation(Map<Integer, List<Location>> clusters, int timeConstraint) {
+    public static Map<Integer, List<Location>> getKnapsackLocation(Map<Integer, List<Location>> clusters, int timeConstraint,
+                                                                   Coordinate center) {
         Map<Integer, List<Location>> selectedLocations = new HashMap<>();
         double score = 0.0;
         for (Integer i : clusters.keySet()) {
-            LocationSelector selector = new KnapsackLocationSelector(clusters.get(i), timeConstraint);
+            LocationSelector selector = new RevisedKnapsackLocationSelector(clusters.get(i), timeConstraint, center);
             selectedLocations.put(i, selector.selectLocationsToVisit());
             score += getTotalScore(selector.selectLocationsToVisit());
         }
